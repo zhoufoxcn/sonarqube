@@ -23,15 +23,14 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
-import org.sonar.api.utils.System2;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.sonar.api.utils.System2;
 
 /**
  * @since 2.7
@@ -48,7 +47,7 @@ public class Command {
   Command(String executable, System2 system) {
     Preconditions.checkArgument(!StringUtils.isBlank(executable), "Command executable can not be blank");
     this.executable = executable;
-    this.env = Maps.newHashMap(system.envVariables());
+    this.env = new HashMap<>(system.envVariables());
     this.system = system;
   }
 
