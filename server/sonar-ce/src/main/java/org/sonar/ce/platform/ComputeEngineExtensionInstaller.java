@@ -19,14 +19,27 @@
  */
 package org.sonar.ce.platform;
 
+import com.google.common.collect.ImmutableSet;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Collections;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.ce.ComputeEngineSide;
+import org.sonar.api.config.Settings;
 import org.sonar.api.server.ServerSide;
 import org.sonar.core.platform.PluginRepository;
 import org.sonar.server.plugins.ServerExtensionInstaller;
 
 public class ComputeEngineExtensionInstaller extends ServerExtensionInstaller {
-  public ComputeEngineExtensionInstaller(SonarRuntime sonarRuntime, PluginRepository pluginRepository) {
-    super(sonarRuntime, pluginRepository, ServerSide.class, ComputeEngineSide.class);
+  public ComputeEngineExtensionInstaller(SonarRuntime sonarRuntime, PluginRepository pluginRepository, Settings settings) {
+    super(sonarRuntime, pluginRepository, getSupportedAnnotations(settings));
   }
+
+   private static Collection<Class<? extends Annotation>> getSupportedAnnotations(Settings settings) {
+    if (settings.getBoolean("sonar.ce.componentLoading.strict")) {
+      return Collections.singleton(ComputeEngineSide.class);
+    }
+    return ImmutableSet.of(ServerSide.class, ComputeEngineSide.class);
+  }
+
 }
