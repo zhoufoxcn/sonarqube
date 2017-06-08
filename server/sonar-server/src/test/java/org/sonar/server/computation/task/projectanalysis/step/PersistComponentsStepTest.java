@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.component.ComponentDao;
 import org.sonar.server.computation.task.projectanalysis.analysis.AnalysisMetadataHolder;
 import org.sonar.server.computation.task.projectanalysis.component.Component;
@@ -56,7 +56,7 @@ public class PersistComponentsStepTest {
     doReturn(component).when(treeRootHolder).getRoot();
     doReturn(projectKey).when(component).getKey();
     doReturn(componentDao).when(dbClient).componentDao();
-    doReturn(emptyList()).when(componentDao).selectAllComponentsFromProjectKey(any(DbSession.class), eq(projectKey));
+    doReturn(emptyList()).when(componentDao).selectAllComponentsFromProjectKey(any(DbSessionImpl.class), eq(projectKey));
 
     thrown.expect(IllegalStateException.class);
     thrown.expectMessage("The project '" + projectKey + "' is not stored in the database, during a project analysis");

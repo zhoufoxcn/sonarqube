@@ -37,6 +37,7 @@ import org.mockito.ArgumentCaptor;
 import org.sonar.core.hash.SourceLinesHashesComputer;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.component.ComponentDao;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.component.ComponentTreeQuery;
@@ -224,7 +225,7 @@ public class FileMoveDetectionStepTest {
   public MutableMovedFilesRepositoryRule movedFilesRepository = new MutableMovedFilesRepositoryRule();
 
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private ComponentDao componentDao = mock(ComponentDao.class);
   private FileSourceDao fileSourceDao = mock(FileSourceDao.class);
   private FileSimilarity fileSimilarity = new FileSimilarityImpl(new SourceSimilarityImpl());

@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.source.FileSourceDao;
 import org.sonar.server.computation.task.projectanalysis.component.Component;
 import org.sonar.server.computation.task.projectanalysis.component.ReportComponent;
@@ -41,7 +42,7 @@ public class TrackerBaseInputFactoryTest {
 
   private BaseIssuesLoader baseIssuesLoader = mock(BaseIssuesLoader.class);
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private FileSourceDao fileSourceDao = mock(FileSourceDao.class);
 
   private MovedFilesRepository movedFilesRepository = mock(MovedFilesRepository.class);

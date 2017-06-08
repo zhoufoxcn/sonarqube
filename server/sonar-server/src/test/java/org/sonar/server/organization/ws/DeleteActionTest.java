@@ -32,6 +32,7 @@ import org.sonar.api.utils.System2;
 import org.sonar.core.util.UuidFactory;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.component.ComponentTesting;
@@ -239,7 +240,7 @@ public class DeleteActionTest {
 
     verifyOrganizationDoesNotExist(organization);
     ArgumentCaptor<List<ComponentDto>> arg = (ArgumentCaptor<List<ComponentDto>>) ((ArgumentCaptor) ArgumentCaptor.forClass(List.class));
-    verify(componentCleanerService).delete(any(DbSession.class), arg.capture());
+    verify(componentCleanerService).delete(any(DbSessionImpl.class), arg.capture());
     assertThat(arg.getValue()).containsOnly(project, view);
   }
 

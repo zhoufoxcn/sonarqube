@@ -29,6 +29,7 @@ import org.sonar.api.rule.RuleStatus;
 import org.sonar.api.rules.RuleType;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.rule.RuleDao;
 import org.sonar.db.rule.RuleDto;
 import org.sonar.server.computation.task.projectanalysis.analysis.AnalysisMetadataHolderRule;
@@ -59,7 +60,7 @@ public class RuleRepositoryImplTest {
       .setOrganizationUuid(ORGANIZATION_UUID);
 
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private RuleDao ruleDao = mock(RuleDao.class);
 
   RuleRepositoryImpl underTest = new RuleRepositoryImpl(dbClient, analysisMetadataHolder);
@@ -68,7 +69,7 @@ public class RuleRepositoryImplTest {
   public void setUp() throws Exception {
     when(dbClient.openSession(anyBoolean())).thenReturn(dbSession);
     when(dbClient.ruleDao()).thenReturn(ruleDao);
-    when(ruleDao.selectAll(any(DbSession.class), eq(ORGANIZATION_UUID))).thenReturn(ImmutableList.of(AB_RULE));
+    when(ruleDao.selectAll(any(DbSessionImpl.class), eq(ORGANIZATION_UUID))).thenReturn(ImmutableList.of(AB_RULE));
   }
 
   @Test
@@ -80,7 +81,7 @@ public class RuleRepositoryImplTest {
   public void first_call_to_getByKey_triggers_call_to_db_and_any_subsequent_get_or_find_call_does_not() {
     underTest.getByKey(AB_RULE.getKey());
 
-    verify(ruleDao, times(1)).selectAll(any(DbSession.class), eq(ORGANIZATION_UUID));
+    verify(ruleDao, times(1)).selectAll(any(DbSessionImpl.class), eq(ORGANIZATION_UUID));
 
     verifyNoMethodCallTriggersCallToDB();
   }
@@ -89,7 +90,7 @@ public class RuleRepositoryImplTest {
   public void first_call_to_findByKey_triggers_call_to_db_and_any_subsequent_get_or_find_call_does_not() {
     underTest.findByKey(AB_RULE.getKey());
 
-    verify(ruleDao, times(1)).selectAll(any(DbSession.class), eq(ORGANIZATION_UUID));
+    verify(ruleDao, times(1)).selectAll(any(DbSessionImpl.class), eq(ORGANIZATION_UUID));
 
     verifyNoMethodCallTriggersCallToDB();
   }
@@ -98,7 +99,7 @@ public class RuleRepositoryImplTest {
   public void first_call_to_getById_triggers_call_to_db_and_any_subsequent_get_or_find_call_does_not() {
     underTest.getById(AB_RULE.getId());
 
-    verify(ruleDao, times(1)).selectAll(any(DbSession.class), eq(ORGANIZATION_UUID));
+    verify(ruleDao, times(1)).selectAll(any(DbSessionImpl.class), eq(ORGANIZATION_UUID));
 
     verifyNoMethodCallTriggersCallToDB();
   }
@@ -107,7 +108,7 @@ public class RuleRepositoryImplTest {
   public void first_call_to_findById_triggers_call_to_db_and_any_subsequent_get_or_find_call_does_not() {
     underTest.findById(AB_RULE.getId());
 
-    verify(ruleDao, times(1)).selectAll(any(DbSession.class), eq(ORGANIZATION_UUID));
+    verify(ruleDao, times(1)).selectAll(any(DbSessionImpl.class), eq(ORGANIZATION_UUID));
 
     verifyNoMethodCallTriggersCallToDB();
   }

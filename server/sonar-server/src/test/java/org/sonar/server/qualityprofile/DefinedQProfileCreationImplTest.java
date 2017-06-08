@@ -43,6 +43,7 @@ import org.sonar.core.util.UuidFactory;
 import org.sonar.core.util.stream.MoreCollectors;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.db.qualityprofile.ActiveRuleKey;
@@ -265,7 +266,7 @@ public class DefinedQProfileCreationImplTest {
       callLogs.add(new CallLog(ruleActivation, qualityProfileDto));
       return changesPerCallIt.next();
     }).when(mockedRuleActivator)
-      .activate(any(DbSession.class), any(RuleActivation.class), any(QualityProfileDto.class));
+      .activate(any(DbSessionImpl.class), any(RuleActivation.class), any(QualityProfileDto.class));
   }
 
   private static ActiveRule activeRule(String id, @Nullable RulePriority rulePriority, String... parameters) {

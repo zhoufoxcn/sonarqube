@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.loadedtemplate.LoadedTemplateDto;
 import org.sonar.db.metric.MetricDto;
@@ -83,7 +84,7 @@ public class RegisterQualityGatesTest {
         tuple(newSecurity.getId().longValue(), OPERATOR_GREATER_THAN, null, "1", 1),
         tuple(newMaintainability.getId().longValue(), OPERATOR_GREATER_THAN, null, "1", 1),
         tuple(newCoverage.getId().longValue(), OPERATOR_LESS_THAN, null, "80", 1));
-    verify(qualityGates).setDefault(any(DbSession.class), anyLong());
+    verify(qualityGates).setDefault(any(DbSessionImpl.class), anyLong());
 
     task.stop();
   }

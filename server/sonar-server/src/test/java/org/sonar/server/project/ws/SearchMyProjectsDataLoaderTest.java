@@ -23,7 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.server.tester.UserSessionRule;
 import org.sonarqube.ws.client.project.SearchMyProjectsRequest;
 
@@ -45,6 +45,6 @@ public class SearchMyProjectsDataLoaderTest {
 
     userSession.anonymous();
 
-    underTest.searchProjects(mock(DbSession.class), mock(SearchMyProjectsRequest.class));
+    underTest.searchProjects(mock(DbSessionImpl.class), mock(SearchMyProjectsRequest.class));
   }
 }

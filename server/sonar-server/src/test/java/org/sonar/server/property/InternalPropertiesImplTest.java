@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.property.InternalPropertiesDao;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +43,7 @@ public class InternalPropertiesImplTest {
   public ExpectedException expectedException = ExpectedException.none();
   
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private InternalPropertiesDao internalPropertiesDao = mock(InternalPropertiesDao.class);
   private InternalPropertiesImpl underTest = new InternalPropertiesImpl(dbClient);
 

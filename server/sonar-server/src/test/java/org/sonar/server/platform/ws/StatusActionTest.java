@@ -29,6 +29,7 @@ import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.IsAliveMapper;
 import org.sonar.server.app.RestartFlagHolder;
 import org.sonar.server.app.RestartFlagHolderImpl;
@@ -66,7 +67,7 @@ public class StatusActionTest {
   private DatabaseMigrationState migrationState = mock(DatabaseMigrationState.class);
   private Platform platform = mock(Platform.class);
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private IsAliveMapper isAliveMapper = mock(IsAliveMapper.class);
   private RestartFlagHolder restartFlagHolder = new RestartFlagHolderImpl();
   private StatusAction underTest = new StatusAction(server, migrationState, platform, dbClient, restartFlagHolder);

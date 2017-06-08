@@ -30,7 +30,7 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rule.Severity;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.db.permission.OrganizationPermission;
@@ -128,7 +128,7 @@ public class ActivateRuleActionTest {
 
     assertThat(response.getStatus()).isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
     ArgumentCaptor<RuleActivation> captor = ArgumentCaptor.forClass(RuleActivation.class);
-    Mockito.verify(ruleActivator).activate(any(DbSession.class), captor.capture(), eq(qualityProfile.getKey()));
+    Mockito.verify(ruleActivator).activate(any(DbSessionImpl.class), captor.capture(), eq(qualityProfile.getKey()));
     assertThat(captor.getValue().getRuleKey()).isEqualTo(ruleKey);
     assertThat(captor.getValue().getSeverity()).isEqualTo(Severity.BLOCKER);
     assertThat(captor.getValue().getParameters()).containsExactly(entry("key1", "v1"), entry("key2", "v2"));
@@ -152,7 +152,7 @@ public class ActivateRuleActionTest {
 
     assertThat(response.getStatus()).isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
     ArgumentCaptor<RuleActivation> captor = ArgumentCaptor.forClass(RuleActivation.class);
-    Mockito.verify(ruleActivator).activate(any(DbSession.class), captor.capture(), eq(qualityProfile.getKey()));
+    Mockito.verify(ruleActivator).activate(any(DbSessionImpl.class), captor.capture(), eq(qualityProfile.getKey()));
     assertThat(captor.getValue().getRuleKey()).isEqualTo(ruleKey);
     assertThat(captor.getValue().getSeverity()).isEqualTo(Severity.BLOCKER);
     assertThat(captor.getValue().getParameters()).containsExactly(entry("key1", "v1"), entry("key2", "v2"));

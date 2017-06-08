@@ -39,6 +39,7 @@ import org.sonar.api.measures.MetricFinder;
 import org.sonar.core.util.Uuids;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.component.ComponentDao;
 import org.sonar.db.organization.OrganizationTesting;
 import org.sonar.db.property.PropertiesDao;
@@ -73,7 +74,7 @@ public class QualityGatesTest {
   @Rule
   public UserSessionRule userSession = UserSessionRule.standalone();
 
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private DbClient dbClient = mock(DbClient.class);
   private QualityGateDao dao = mock(QualityGateDao.class);
   private QualityGateConditionDao conditionDao = mock(QualityGateConditionDao.class);
@@ -181,7 +182,7 @@ public class QualityGatesTest {
 
     verify(dao).selectById(dbSession, defaultId);
     ArgumentCaptor<PropertyDto> propertyCaptor = ArgumentCaptor.forClass(PropertyDto.class);
-    verify(propertiesDao).saveProperty(any(DbSession.class), propertyCaptor.capture());
+    verify(propertiesDao).saveProperty(any(DbSessionImpl.class), propertyCaptor.capture());
 
     assertThat(propertyCaptor.getValue().getKey()).isEqualTo("sonar.qualitygate");
     assertThat(propertyCaptor.getValue().getValue()).isEqualTo("42");

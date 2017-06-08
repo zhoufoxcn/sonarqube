@@ -27,7 +27,7 @@ import org.sonar.api.CoreProperties;
 import org.sonar.api.utils.log.LogTester;
 import org.sonar.api.utils.log.LoggerLevel;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.property.PropertyDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -103,7 +103,7 @@ public class LogServerIdTest {
   public void log_partial_information_if_property_is_set_without_value() {
     setProperty(CoreProperties.PERMANENT_SERVER_ID, "123456789");
     PropertyDto dto = new PropertyDto().setKey(CoreProperties.ORGANISATION).setValue(null);
-    when(dbClient.propertiesDao().selectGlobalProperty(any(DbSession.class), eq(CoreProperties.ORGANISATION))).thenReturn(dto);
+    when(dbClient.propertiesDao().selectGlobalProperty(any(DbSessionImpl.class), eq(CoreProperties.ORGANISATION))).thenReturn(dto);
 
     underTest.start();
 
@@ -115,7 +115,7 @@ public class LogServerIdTest {
     if (propertyValue != null) {
       dto = new PropertyDto().setKey(propertyKey).setValue(propertyValue);
     }
-    when(dbClient.propertiesDao().selectGlobalProperty(any(DbSession.class), eq(propertyKey))).thenReturn(dto);
+    when(dbClient.propertiesDao().selectGlobalProperty(any(DbSessionImpl.class), eq(propertyKey))).thenReturn(dto);
   }
 
   private void verifyLog(String expectedId, String expectedOrganisation, String expectedIp) {

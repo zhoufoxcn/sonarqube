@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.web.UserRole;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.component.ComponentTesting;
 import org.sonar.db.organization.OrganizationDto;
@@ -83,7 +83,7 @@ public class CoveredFilesActionTest {
       new CoveredFileDoc().setFileUuid(FILE_1_ID).setCoveredLines(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
       new CoveredFileDoc().setFileUuid(FILE_2_ID).setCoveredLines(Arrays.asList(1, 2, 3))));
     OrganizationDto organizationDto = OrganizationTesting.newOrganizationDto();
-    when(dbClient.componentDao().selectByUuids(any(DbSession.class), anyList())).thenReturn(
+    when(dbClient.componentDao().selectByUuids(any(DbSessionImpl.class), anyList())).thenReturn(
       Arrays.asList(
         newFileDto(ComponentTesting.newPrivateProjectDto(organizationDto), null, FILE_1_ID).setKey("org.foo.Bar.java").setLongName("src/main/java/org/foo/Bar.java"),
         newFileDto(ComponentTesting.newPrivateProjectDto(organizationDto), null, FILE_2_ID).setKey("org.foo.File.java").setLongName("src/main/java/org/foo/File.java")));
@@ -104,7 +104,7 @@ public class CoveredFilesActionTest {
       new CoveredFileDoc().setFileUuid(FILE_1_ID).setCoveredLines(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)),
       new CoveredFileDoc().setFileUuid(FILE_2_ID).setCoveredLines(Arrays.asList(1, 2, 3))));
     OrganizationDto organizationDto = OrganizationTesting.newOrganizationDto();
-    when(dbClient.componentDao().selectByUuids(any(DbSession.class), anyList())).thenReturn(
+    when(dbClient.componentDao().selectByUuids(any(DbSessionImpl.class), anyList())).thenReturn(
       Arrays.asList(
         newFileDto(ComponentTesting.newPrivateProjectDto(organizationDto), null, FILE_1_ID).setKey("org.foo.Bar.java").setLongName("src/main/java/org/foo/Bar.java"),
         newFileDto(ComponentTesting.newPrivateProjectDto(organizationDto), null, FILE_2_ID).setKey("org.foo.File.java").setLongName("src/main/java/org/foo/File.java")));

@@ -22,6 +22,7 @@ package org.sonar.ce.db;
 import org.junit.Test;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.MyBatis;
 import org.sonar.db.property.PropertyDto;
 
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class ReadOnlyPropertiesDaoTest {
   private MyBatis myBatis = mock(MyBatis.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private PropertyDto propertyDto = mock(PropertyDto.class);
   private org.sonar.core.properties.PropertyDto oldPropertyDto = mock(org.sonar.core.properties.PropertyDto.class);
   private ReadOnlyPropertiesDao underTest = new ReadOnlyPropertiesDao(myBatis, System2.INSTANCE);

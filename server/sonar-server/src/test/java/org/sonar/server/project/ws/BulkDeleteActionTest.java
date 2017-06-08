@@ -26,7 +26,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.organization.OrganizationDto;
@@ -187,7 +187,7 @@ public class BulkDeleteActionTest {
 
   private void verifyDeleted(ComponentDto... projects) {
     ArgumentCaptor<ComponentDto> argument = ArgumentCaptor.forClass(ComponentDto.class);
-    verify(componentCleanerService, times(projects.length)).delete(any(DbSession.class), argument.capture());
+    verify(componentCleanerService, times(projects.length)).delete(any(DbSessionImpl.class), argument.capture());
 
     for (ComponentDto project : projects) {
       assertThat(argument.getAllValues()).extracting(ComponentDto::uuid).contains(project.uuid());

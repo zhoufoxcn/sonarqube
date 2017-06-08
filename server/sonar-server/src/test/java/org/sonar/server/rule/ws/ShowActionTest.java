@@ -32,7 +32,7 @@ import org.sonar.api.config.MapSettings;
 import org.sonar.api.resources.Languages;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.db.qualityprofile.QualityProfileDto;
@@ -148,7 +148,7 @@ public class ShowActionTest {
       .setInherit(randomAlphanumeric(5))
       .setSeverity(randomAlphanumeric(5))
       .build();
-    Mockito.doReturn(singletonList(active)).when(activeRuleCompleter).completeShow(any(DbSession.class), orgCaptor.capture(), ruleCaptor.capture());
+    Mockito.doReturn(singletonList(active)).when(activeRuleCompleter).completeShow(any(DbSessionImpl.class), orgCaptor.capture(), ruleCaptor.capture());
 
     new ActiveRuleIndexer(System2.INSTANCE, dbClient, esClient).index();
 

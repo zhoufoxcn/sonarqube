@@ -32,7 +32,7 @@ import org.mockito.Mockito;
 import org.sonar.api.config.Settings;
 import org.sonar.api.config.MapSettings;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.purge.IdUuidPair;
 import org.sonar.server.computation.dbcleaner.ProjectCleaner;
 import org.sonar.server.computation.task.projectanalysis.component.Component;
@@ -139,7 +139,7 @@ public class PurgeDatastoresStepTest extends BaseStepTest {
     underTest.execute();
 
     ArgumentCaptor<IdUuidPair> argumentCaptor = ArgumentCaptor.forClass(IdUuidPair.class);
-    verify(projectCleaner).purge(any(DbSession.class), argumentCaptor.capture(), any(Settings.class), anyList());
+    verify(projectCleaner).purge(any(DbSessionImpl.class), argumentCaptor.capture(), any(Settings.class), anyList());
     assertThat(argumentCaptor.getValue().getId()).isEqualTo(PROJECT_ID);
     assertThat(argumentCaptor.getValue().getUuid()).isEqualTo(PROJECT_UUID);
   }

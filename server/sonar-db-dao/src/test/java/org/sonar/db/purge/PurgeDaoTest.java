@@ -37,6 +37,7 @@ import org.sonar.api.utils.System2;
 import org.sonar.core.util.Uuids;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.ce.CeActivityDto;
 import org.sonar.db.ce.CeQueueDto;
@@ -300,7 +301,7 @@ public class PurgeDaoTest {
 
   @Test
   public void deleteNonRootComponents_has_no_effect_when_parameter_is_empty() {
-    DbSession dbSession = mock(DbSession.class);
+    DbSession dbSession = mock(DbSessionImpl.class);
 
     underTest.deleteNonRootComponents(dbSession, Collections.emptyList());
 
@@ -318,7 +319,7 @@ public class PurgeDaoTest {
   }
 
   private void verifyNoEffect(ComponentDto firstRoot, ComponentDto... otherRoots) {
-    DbSession dbSession = mock(DbSession.class);
+    DbSession dbSession = mock(DbSessionImpl.class);
 
     List<ComponentDto> componentDtos = Stream.concat(Stream.of(firstRoot), Arrays.stream(otherRoots)).collect(Collectors.toList());
     Collections.shuffle(componentDtos); // order of collection must not matter

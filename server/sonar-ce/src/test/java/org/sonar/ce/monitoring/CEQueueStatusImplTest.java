@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.ce.CeQueueDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -135,7 +135,7 @@ public class CEQueueStatusImplTest {
 
   @Test
   public void count_Pending_from_database() {
-    when(dbClient.ceQueueDao().countByStatus(any(DbSession.class), eq(CeQueueDto.Status.PENDING))).thenReturn(42);
+    when(dbClient.ceQueueDao().countByStatus(any(DbSessionImpl.class), eq(CeQueueDto.Status.PENDING))).thenReturn(42);
 
     assertThat(underTest.getPendingCount()).isEqualTo(42);
   }

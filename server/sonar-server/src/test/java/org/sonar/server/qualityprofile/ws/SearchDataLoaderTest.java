@@ -31,7 +31,7 @@ import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Languages;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDto;
 import org.sonar.db.organization.OrganizationDto;
@@ -146,7 +146,7 @@ public class SearchDataLoaderTest {
 
   private ComponentDto insertProject() {
     ComponentDto project = dbTester.components().insertPrivateProject(organization);
-    doReturn(project).when(componentFinder).getByKey(any(DbSession.class), eq(project.getKey()));
+    doReturn(project).when(componentFinder).getByKey(any(DbSessionImpl.class), eq(project.getKey()));
     return project;
   }
 }

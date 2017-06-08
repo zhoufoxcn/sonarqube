@@ -30,7 +30,7 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.utils.System2;
 import org.sonar.api.utils.internal.AlwaysIncreasingSystem2;
 import org.sonar.core.config.CorePropertyDefinitions;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.user.GroupDto;
 import org.sonar.db.user.UserDto;
@@ -337,7 +337,7 @@ public class CreateActionTest {
     assertThat(dbUser).isPresent();
 
     ArgumentCaptor<UserDto> userCaptor = ArgumentCaptor.forClass(UserDto.class);
-    verify(organizationCreation).createForUser(any(DbSession.class), userCaptor.capture());
+    verify(organizationCreation).createForUser(any(DbSessionImpl.class), userCaptor.capture());
     assertThat(userCaptor.getValue().getId()).isEqualTo(dbUser.get().getId());
   }
 

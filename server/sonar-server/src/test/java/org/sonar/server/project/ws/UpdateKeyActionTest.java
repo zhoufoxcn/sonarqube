@@ -28,7 +28,7 @@ import org.sonar.api.server.ws.WebService;
 import org.sonar.api.server.ws.WebService.Param;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDbTester;
 import org.sonar.db.component.ComponentDto;
@@ -127,7 +127,7 @@ public class UpdateKeyActionTest {
   }
 
   private void assertCallComponentService(@Nullable String newKey) {
-    verify(componentService).updateKey(any(DbSession.class), any(ComponentDto.class), eq(newKey));
+    verify(componentService).updateKey(any(DbSessionImpl.class), any(ComponentDto.class), eq(newKey));
   }
 
   private ComponentDto insertProject() {

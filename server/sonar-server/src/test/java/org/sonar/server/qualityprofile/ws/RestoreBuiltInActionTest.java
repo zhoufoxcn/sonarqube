@@ -25,7 +25,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.sonar.api.resources.Languages;
 import org.sonar.api.server.ws.WebService;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.server.exceptions.ForbiddenException;
@@ -89,7 +89,7 @@ public class RestoreBuiltInActionTest {
     TestResponse response = tester.newRequest().setParam("language", "xoo").execute();
 
     ArgumentCaptor<OrganizationDto> organizationArgument = ArgumentCaptor.forClass(OrganizationDto.class);
-    verify(reset).resetLanguage(any(DbSession.class), organizationArgument.capture(), eq("xoo"));
+    verify(reset).resetLanguage(any(DbSessionImpl.class), organizationArgument.capture(), eq("xoo"));
     assertThat(organizationArgument.getValue().getUuid()).isEqualTo(organization.getUuid());
     assertThat(response.getStatus()).isEqualTo(204);
   }
@@ -104,7 +104,7 @@ public class RestoreBuiltInActionTest {
       .execute();
 
     ArgumentCaptor<OrganizationDto> organizationArgument = ArgumentCaptor.forClass(OrganizationDto.class);
-    verify(reset).resetLanguage(any(DbSession.class), organizationArgument.capture(), eq("xoo"));
+    verify(reset).resetLanguage(any(DbSessionImpl.class), organizationArgument.capture(), eq("xoo"));
     assertThat(organizationArgument.getValue().getUuid()).isEqualTo(organization.getUuid());
     assertThat(response.getStatus()).isEqualTo(204);
   }

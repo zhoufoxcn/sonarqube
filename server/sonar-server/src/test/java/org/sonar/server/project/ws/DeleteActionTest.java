@@ -27,7 +27,7 @@ import org.mockito.ArgumentCaptor;
 import org.sonar.api.utils.System2;
 import org.sonar.api.web.UserRole;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDbTester;
 import org.sonar.db.component.ComponentDto;
@@ -98,7 +98,7 @@ public class DeleteActionTest {
 
   private String verifyDeletedKey() {
     ArgumentCaptor<ComponentDto> argument = ArgumentCaptor.forClass(ComponentDto.class);
-    verify(componentCleanerService).delete(any(DbSession.class), argument.capture());
+    verify(componentCleanerService).delete(any(DbSessionImpl.class), argument.capture());
     return argument.getValue().key();
   }
 

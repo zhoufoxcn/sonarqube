@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.qualityprofile.QualityProfileDao;
 import org.sonar.db.qualityprofile.QualityProfileDto;
 
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.when;
 
 public class CachingRuleActivatorTest {
   private DbClient dbClient = mock(DbClient.class);
-  private DbSession dbSession = mock(DbSession.class);
+  private DbSession dbSession = mock(DbSessionImpl.class);
   private QualityProfileDao qualityProfileDao = mock(QualityProfileDao.class);
   private CachingRuleActivator underTest = new CachingRuleActivator(null, dbClient, null, null, null, null, null);
 

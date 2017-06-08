@@ -29,6 +29,7 @@ import org.sonar.api.utils.log.LogTester;
 import org.sonar.api.utils.log.LoggerLevel;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.dialect.Dialect;
 import org.sonar.db.dialect.H2;
 import org.sonar.db.dialect.MsSql;
@@ -134,7 +135,7 @@ public class AutoDbMigrationTest {
 
   private void mockDbClientOpenSession() {
     Connection connection = mock(Connection.class);
-    DbSession session = mock(DbSession.class);
+    DbSession session = mock(DbSessionImpl.class);
     when(session.getConnection()).thenReturn(connection);
     when(dbClient.openSession(false)).thenReturn(session);
   }

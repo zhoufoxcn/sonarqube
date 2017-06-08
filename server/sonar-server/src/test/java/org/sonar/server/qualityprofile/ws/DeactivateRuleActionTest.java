@@ -29,7 +29,7 @@ import org.mockito.Mockito;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.organization.OrganizationDto;
 import org.sonar.db.permission.OrganizationPermission;
@@ -120,7 +120,7 @@ public class DeactivateRuleActionTest {
 
     assertThat(response.getStatus()).isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
     ArgumentCaptor<ActiveRuleKey> captor = ArgumentCaptor.forClass(ActiveRuleKey.class);
-    Mockito.verify(ruleActivator).deactivateAndUpdateIndex(any(DbSession.class), captor.capture());
+    Mockito.verify(ruleActivator).deactivateAndUpdateIndex(any(DbSessionImpl.class), captor.capture());
     assertThat(captor.getValue().ruleKey()).isEqualTo(ruleKey);
     assertThat(captor.getValue().qProfile()).isEqualTo(qualityProfile.getKey());
   }
@@ -140,7 +140,7 @@ public class DeactivateRuleActionTest {
 
     assertThat(response.getStatus()).isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
     ArgumentCaptor<ActiveRuleKey> captor = ArgumentCaptor.forClass(ActiveRuleKey.class);
-    Mockito.verify(ruleActivator).deactivateAndUpdateIndex(any(DbSession.class), captor.capture());
+    Mockito.verify(ruleActivator).deactivateAndUpdateIndex(any(DbSessionImpl.class), captor.capture());
     assertThat(captor.getValue().ruleKey()).isEqualTo(ruleKey);
     assertThat(captor.getValue().qProfile()).isEqualTo(qualityProfile.getKey());
   }

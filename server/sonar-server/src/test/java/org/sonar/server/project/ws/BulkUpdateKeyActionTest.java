@@ -29,7 +29,7 @@ import org.sonar.api.config.MapSettings;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.component.ComponentDbTester;
 import org.sonar.db.component.ComponentDto;
@@ -140,7 +140,7 @@ public class BulkUpdateKeyActionTest {
         tuple(project.key(), "your_project", false),
         tuple(module.key(), "your_project:root:module", false));
 
-    verify(componentService).bulkUpdateKey(any(DbSession.class), eq(project.uuid()), eq(FROM), eq(TO));
+    verify(componentService).bulkUpdateKey(any(DbSessionImpl.class), eq(project.uuid()), eq(FROM), eq(TO));
   }
 
   @Test
@@ -150,7 +150,7 @@ public class BulkUpdateKeyActionTest {
 
     callByKey(provisionedProject.key(), provisionedProject.getKey(), newKey);
 
-    verify(componentService).bulkUpdateKey(any(DbSession.class), eq(provisionedProject.uuid()), eq(provisionedProject.getKey()), eq(newKey));
+    verify(componentService).bulkUpdateKey(any(DbSessionImpl.class), eq(provisionedProject.uuid()), eq(provisionedProject.getKey()), eq(newKey));
   }
 
   @Test

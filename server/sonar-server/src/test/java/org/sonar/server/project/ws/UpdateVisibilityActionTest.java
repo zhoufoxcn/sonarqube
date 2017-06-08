@@ -34,6 +34,7 @@ import org.sonar.core.permission.ProjectPermissions;
 import org.sonar.core.util.stream.MoreCollectors;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.ce.CeQueueDto;
 import org.sonar.db.component.ComponentDto;
@@ -444,7 +445,7 @@ public class UpdateVisibilityActionTest {
       .setParam(PARAM_VISIBILITY, initiallyPrivate ? PUBLIC : PRIVATE)
       .execute();
 
-    verify(permissionIndexer).indexProjectsByUuids(any(DbSession.class), eq(Collections.singletonList(project.uuid())));
+    verify(permissionIndexer).indexProjectsByUuids(any(DbSessionImpl.class), eq(Collections.singletonList(project.uuid())));
   }
 
   @Test

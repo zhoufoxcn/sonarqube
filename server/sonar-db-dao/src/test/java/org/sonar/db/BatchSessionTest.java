@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 public class BatchSessionTest {
   @Test
   public void shouldCommitWhenReachingBatchSize() {
-    DbSession mybatisSession = mock(DbSession.class);
+    DbSession mybatisSession = mock(DbSessionImpl.class);
     BatchSession session = new BatchSession(mybatisSession, 10);
 
     for (int i = 0; i < 9; i++) {
@@ -46,7 +46,7 @@ public class BatchSessionTest {
 
   @Test
   public void shouldCommitWhenReachingBatchSizeWithoutCommits() {
-    DbSession mybatisSession = mock(DbSession.class);
+    DbSession mybatisSession = mock(DbSessionImpl.class);
     BatchSession session = new BatchSession(mybatisSession, 10);
 
     for (int i = 0; i < 9; i++) {
@@ -61,7 +61,7 @@ public class BatchSessionTest {
 
   @Test
   public void shouldResetCounterAfterCommit() {
-    DbSession mybatisSession = mock(DbSession.class);
+    DbSession mybatisSession = mock(DbSessionImpl.class);
     BatchSession session = new BatchSession(mybatisSession, 10);
 
     for (int i = 0; i < 35; i++) {

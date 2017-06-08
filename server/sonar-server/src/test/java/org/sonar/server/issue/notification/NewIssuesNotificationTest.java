@@ -30,7 +30,7 @@ import org.sonar.api.utils.Duration;
 import org.sonar.api.utils.Durations;
 import org.sonar.core.issue.DefaultIssue;
 import org.sonar.db.DbClient;
-import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.rule.RuleDefinitionDto;
 import org.sonar.server.user.index.UserIndex;
 
@@ -76,10 +76,10 @@ public class NewIssuesNotificationTest {
   public void set_statistics() {
     addIssueNTimes(newIssue1(), 5);
     addIssueNTimes(newIssue2(), 3);
-    when(dbClient.componentDao().selectOrFailByUuid(any(DbSession.class), eq("file-uuid")).name()).thenReturn("file-name");
-    when(dbClient.componentDao().selectOrFailByUuid(any(DbSession.class), eq("directory-uuid")).name()).thenReturn("directory-name");
-    when(dbClient.ruleDao().selectOrFailDefinitionByKey(any(DbSession.class), eq(RuleKey.of("SonarQube", "rule-the-world")))).thenReturn(newRule("Rule the World", "Java"));
-    when(dbClient.ruleDao().selectOrFailDefinitionByKey(any(DbSession.class), eq(RuleKey.of("SonarQube", "rule-the-universe")))).thenReturn(newRule("Rule the Universe", "Clojure"));
+    when(dbClient.componentDao().selectOrFailByUuid(any(DbSessionImpl.class), eq("file-uuid")).name()).thenReturn("file-name");
+    when(dbClient.componentDao().selectOrFailByUuid(any(DbSessionImpl.class), eq("directory-uuid")).name()).thenReturn("directory-name");
+    when(dbClient.ruleDao().selectOrFailDefinitionByKey(any(DbSessionImpl.class), eq(RuleKey.of("SonarQube", "rule-the-world")))).thenReturn(newRule("Rule the World", "Java"));
+    when(dbClient.ruleDao().selectOrFailDefinitionByKey(any(DbSessionImpl.class), eq(RuleKey.of("SonarQube", "rule-the-universe")))).thenReturn(newRule("Rule the Universe", "Clojure"));
 
     underTest.setStatistics("project-long-name", stats);
 

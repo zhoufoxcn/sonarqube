@@ -28,6 +28,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.purge.IdUuidPair;
 import org.sonar.db.purge.PurgeDao;
 import org.sonar.db.purge.PurgeProfiler;
@@ -44,7 +45,7 @@ public class DefaultPeriodCleanerTest {
   @Test
   public void doClean() {
     PurgeDao dao = mock(PurgeDao.class);
-    DbSession session = mock(DbSession.class);
+    DbSession session = mock(DbSessionImpl.class);
     when(dao.selectPurgeableAnalyses("uuid_123", session)).thenReturn(Arrays.asList(
         new PurgeableAnalysisDto().setAnalysisId(999).setAnalysisUuid("u999").setDate(System2.INSTANCE.now()),
         new PurgeableAnalysisDto().setAnalysisId(456).setAnalysisUuid("u456").setDate(System2.INSTANCE.now())

@@ -34,6 +34,7 @@ import org.sonar.api.platform.NewUserHandler;
 import org.sonar.api.utils.System2;
 import org.sonar.db.DbClient;
 import org.sonar.db.DbSession;
+import org.sonar.db.DbSessionImpl;
 import org.sonar.db.DbTester;
 import org.sonar.db.user.GroupDto;
 import org.sonar.db.user.GroupTesting;
@@ -500,7 +501,7 @@ public class UserUpdaterTest {
       .setPassword("PASSWORD")
       .build());
 
-    verify(organizationCreation).createForUser(any(DbSession.class), eq(dto));
+    verify(organizationCreation).createForUser(any(DbSessionImpl.class), eq(dto));
   }
 
   @Test
