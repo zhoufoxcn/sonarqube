@@ -22,6 +22,7 @@ package org.sonar.ce.container;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
 import javax.annotation.CheckForNull;
+import org.sonar.DBSessionsImpl;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarQubeVersion;
 import org.sonar.api.config.EmailSettings;
@@ -181,12 +182,10 @@ public class ComputeEngineContainerImpl implements ComputeEngineContainer {
     if (props.valueAsBoolean("sonar.cluster.enabled")) {
       this.level4.add(
         HazelcastClientWrapperImpl.class,
-        CeDistributedInformationImpl.class
-      );
+        CeDistributedInformationImpl.class);
     } else {
       this.level4.add(
-        StandaloneCeDistributedInformation.class
-      );
+        StandaloneCeDistributedInformation.class);
     }
     configureFromModules(this.level4);
     ServerExtensionInstaller extensionInstaller = this.level4.getComponentByType(ServerExtensionInstaller.class);
@@ -247,6 +246,7 @@ public class ComputeEngineContainerImpl implements ComputeEngineContainer {
       // DB
       DaoModule.class,
       ReadOnlyPropertiesDao.class,
+      DBSessionsImpl.class,
       DbClient.class,
 
       // Elasticsearch
