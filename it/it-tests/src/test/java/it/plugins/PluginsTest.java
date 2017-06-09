@@ -34,12 +34,10 @@ import it.plugins.checks.GroovyCheck;
 import it.plugins.checks.JavaCheck;
 import it.plugins.checks.JavascriptCheck;
 import it.plugins.checks.PhpCheck;
-import it.plugins.checks.PliCheck;
 import it.plugins.checks.PythonCheck;
 import it.plugins.checks.RpgCheck;
 import it.plugins.checks.SwiftCheck;
 import it.plugins.checks.Validation;
-import it.plugins.checks.VbCheck;
 import it.plugins.checks.WebCheck;
 import java.io.File;
 import java.util.Arrays;
@@ -74,11 +72,13 @@ public class PluginsTest {
     new JavaCheck(),
     new JavascriptCheck(),
     new PhpCheck(),
-    new PliCheck(),
+    // SONAR-7618 SonarPLI 1.5.0.702 not compatible with CE not loading @ServerSide
+    //new PliCheck(),
     new PythonCheck(),
     new RpgCheck(),
     new SwiftCheck(),
-    new VbCheck(),
+    // SONAR-7618 Visual Basic 2.2 not compatible with CE not loading @ServerSide
+    //new VbCheck(),
     new WebCheck());
 
   private static Orchestrator ORCHESTRATOR;
