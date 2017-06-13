@@ -24,7 +24,7 @@ import { translate } from '../../../../helpers/l10n';
 import type { Analysis } from '../../types';
 
 type Props = {
-  addEvent: (string, string) => Promise<*>,
+  addEvent: (analysis: string, name: string, category?: string) => Promise<*>,
   analysis: Analysis,
   addEventButtonText: string
 };

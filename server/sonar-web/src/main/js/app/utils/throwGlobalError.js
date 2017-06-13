@@ -18,16 +18,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // @flow
-import React from 'react';
-import ChangeEventForm from './ChangeEventForm';
-import type { Event } from '../../types';
+import getStore from './getStore';
+import { onFail } from '../../store/rootActions';
 
-type Props = {
-  changeEvent: (string, string) => Promise<*>,
-  event: Event,
-  onClose: () => void
-};
-
-export default function ChangeVersionForm(props: Props) {
-  return <ChangeEventForm {...props} changeEventButtonText="project_activity.change_version" />;
+export default function throwGlobalError(error: Object) {
+  const store = getStore();
+  onFail(store.dispatch)(error);
+  return Promise.reject();
 }

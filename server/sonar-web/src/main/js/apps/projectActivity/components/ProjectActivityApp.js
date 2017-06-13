@@ -23,22 +23,26 @@ import Helmet from 'react-helmet';
 import ProjectActivityPageHeader from './ProjectActivityPageHeader';
 import ProjectActivityAnalysesList from './ProjectActivityAnalysesList';
 import ProjectActivityPageFooter from './ProjectActivityPageFooter';
+import throwGlobalError from '../../../app/utils/throwGlobalError';
+import * as api from '../../../api/projectActivity';
 import * as actions from '../actions';
-import { parseQuery, serializeUrlQuery } from '../utils';
+import { parseQuery, serializeQuery, serializeUrlQuery } from '../utils';
 import { translate } from '../../../helpers/l10n';
 import './projectActivity.css';
-import type { Query, ProjectActivityState as State } from '../types';
+import type { Analysis, Query, Paging } from '../types';
 import type { RawQuery } from '../../../helpers/query';
 
 type Props = {
-  addEvent: (string, string, string | void) => Promise<*>,
-  changeEvent: (string, string) => Promise<*>,
-  deleteAnalysis: string => Promise<*>,
-  deleteEvent: string => Promise<*>,
-  fetchActivity: (Query, Object | void) => Promise<*>,
   location: { pathname: string, query: RawQuery },
   project: { configuration?: { showHistory: boolean }, key: string },
   router: { push: ({ pathname: string, query?: RawQuery }) => void }
+};
+
+export type State = {
+  analyses: Array<Analysis>,
+  loading: boolean,
+  paging?: Paging,
+  query: Query
 };
 
 export default class ProjectActivityApp extends React.PureComponent {
@@ -46,9 +50,9 @@ export default class ProjectActivityApp extends React.PureComponent {
   props: Props;
   state: State;
 
-  constructor(ownProps: Props) {
-    super(ownProps);
-    this.state = { loading: true, query: parseQuery(ownProps.location.query) };
+  constructor(props: Props) {
+    super(props);
+    this.state = { analyses: [], loading: true, query: parseQuery(props.location.query) };
   }
 
   componentDidMount() {
@@ -70,6 +74,17 @@ export default class ProjectActivityApp extends React.PureComponent {
     elem && elem.classList.remove('dashboard-page');
   }
 
+  fetchActivity = (
+    query: Query,
+    additional?: {}
+  ): Promise<{ analyses: Array<Analysis>, paging: Paging }> => {
+    const parameters = {
+      ...serializeQuery(query),
+      ...additional
+    };
+    return api.getProjectActivity(parameters).catch(throwGlobalError);
+  };
+
   fetchMoreActivity = () => {
     const { paging, query } = this.state;
     if (!paging) {
@@ -77,7 +92,7 @@ export default class ProjectActivityApp extends React.PureComponent {
     }
 
     this.setState({ loading: true });
-    this.props.fetchActivity(query, { p: paging.pageIndex + 1 }).then(({ analyses, paging }) => {
+    this.fetchActivity(query, { p: paging.pageIndex + 1 }).then(({ analyses, paging }) => {
       if (this.mounted) {
         this.setState((state: State) => ({
           analyses: state.analyses ? state.analyses.concat(analyses) : analyses,
@@ -88,38 +103,43 @@ export default class ProjectActivityApp extends React.PureComponent {
     });
   };
 
-  addCustomEvent = (analysis: string, name: string, category?: string) =>
-    this.props
-      .addEvent(analysis, name, category)
+  addCustomEvent = (analysis: string, name: string, category?: string): Promise<*> =>
+    api
+      .createEvent(analysis, name, category)
       .then(
-        ({ analysis, event }) =>
+        ({ analysis, ...event }) =>
           this.mounted && this.setState(actions.addCustomEvent(analysis, event))
-      );
+      )
+      .catch(throwGlobalError);
 
-  addVersion = (analysis: string, version: string) =>
+  addVersion = (analysis: string, version: string): Promise<*> =>
     this.addCustomEvent(analysis, version, 'VERSION');
 
-  deleteEvent = (analysis: string, event: string) =>
-    this.props
+  deleteEvent = (analysis: string, event: string): Promise<*> =>
+    api
       .deleteEvent(event)
-      .then(() => this.mounted && this.setState(actions.deleteEvent(analysis, event)));
+      .then(() => this.mounted && this.setState(actions.deleteEvent(analysis, event)))
+      .catch(throwGlobalError);
 
-  changeEvent = (event: string, name: string) =>
-    this.props
+  changeEvent = (event: string, name: string): Promise<*> =>
+    api
       .changeEvent(event, name)
       .then(
-        ({ analysis, event }) => this.mounted && this.setState(actions.changeEvent(analysis, event))
-      );
+        ({ analysis, ...event }) =>
+          this.mounted && this.setState(actions.changeEvent(analysis, event))
+      )
+      .catch(throwGlobalError);
 
-  deleteAnalysis = (analysis: string) =>
-    this.props
+  deleteAnalysis = (analysis: string): Promise<*> =>
+    api
       .deleteAnalysis(analysis)
-      .then(() => this.mounted && this.setState(actions.deleteAnalysis(analysis)));
+      .then(() => this.mounted && this.setState(actions.deleteAnalysis(analysis)))
+      .catch(throwGlobalError);
 
   handleQueryChange() {
     const query = parseQuery(this.props.location.query);
     this.setState({ loading: true, query });
-    this.props.fetchActivity(query).then(({ analyses, paging }) => {
+    this.fetchActivity(query).then(({ analyses, paging }) => {
       if (this.mounted) {
         this.setState({
           analyses,
@@ -130,7 +150,7 @@ export default class ProjectActivityApp extends React.PureComponent {
     });
   }
 
-  updateQuery = (newQuery: { [string]: ?string }) => {
+  updateQuery = (newQuery: Query) => {
     this.props.router.push({
       pathname: this.props.location.pathname,
       query: {

@@ -20,8 +20,8 @@
 // @flow
 import React from 'react';
 import EventInner from './EventInner';
-import ChangeCustomEventForm from './forms/ChangeCustomEventForm';
-import RemoveCustomEventForm from './forms/RemoveCustomEventForm';
+import ChangeEventForm from './forms/ChangeEventForm';
+import RemoveEventForm from './forms/RemoveEventForm';
 import DeleteIcon from './DeleteIcon';
 import ChangeIcon from './ChangeIcon';
 import type { Event as EventType } from '../types';
@@ -29,8 +29,8 @@ import type { Event as EventType } from '../types';
 type Props = {
   analysis: string,
   canAdmin: boolean,
-  changeEvent: (string, string) => Promise<*>,
-  deleteEvent: (string, string) => Promise<*>,
+  changeEvent: (event: string, name: string) => Promise<*>,
+  deleteEvent: (analysis: string, event: string) => Promise<*>,
   event: EventType,
   isFirst: boolean
 };
@@ -78,9 +78,10 @@ export default class Event extends React.PureComponent {
 
   render() {
     const { event, canAdmin } = this.props;
-    const canChange = ['OTHER', 'VERSION'].includes(event.category);
-    const canDelete =
-      event.category === 'OTHER' || (event.category === 'VERSION' && !this.props.isFirst);
+    const isOther = event.category === 'OTHER';
+    const isVersion = !isOther && event.category === 'VERSION';
+    const canChange = isOther || isVersion;
+    const canDelete = isOther || (isVersion && !this.props.isFirst);
     const showActions = canAdmin && (canChange || canDelete);
 
     return (
@@ -100,18 +101,29 @@ export default class Event extends React.PureComponent {
           </div>}
 
         {this.state.changing &&
-          <ChangeCustomEventForm
+          <ChangeEventForm
+            changeEventButtonText={
+              'project_activity.' + (isVersion ? 'change_version' : 'change_custom_event')
+            }
             changeEvent={this.props.changeEvent}
             event={this.props.event}
             onClose={this.stopChanging}
           />}
 
         {this.state.deleting &&
-          <RemoveCustomEventForm
+          <RemoveEventForm
             analysis={this.props.analysis}
             deleteEvent={this.props.deleteEvent}
             event={this.props.event}
             onClose={this.stopDeleting}
+            removeEventButtonText={
+              'project_activity.' + (isVersion ? 'remove_version' : 'remove_custom_event')
+            }
+            removeEventQuestion={
+              'project_activity.' +
+                (isVersion ? 'remove_version' : 'remove_custom_event') +
+                '.question'
+            }
           />}
       </div>
     );

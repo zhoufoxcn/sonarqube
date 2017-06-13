@@ -26,8 +26,8 @@ import type { Event as EventType } from '../types';
 type Props = {
   analysis: string,
   canAdmin: boolean,
-  changeEvent: (string, string) => Promise<*>,
-  deleteEvent: (string, string) => Promise<*>,
+  changeEvent: (event: string, name: string) => Promise<*>,
+  deleteEvent: (analysis: string, event: string) => Promise<*>,
   events: Array<EventType>,
   isFirst: boolean
 };

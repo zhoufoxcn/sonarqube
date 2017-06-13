@@ -23,13 +23,13 @@ import ListFooter from '../../../components/controls/ListFooter';
 import type { Paging } from '../types';
 
 type Props = {
-  analyses?: Array<*>,
+  analyses: Array<*>,
   fetchMoreActivity: () => void,
   paging?: Paging
 };
 
 export default function ProjectActivityPageFooter({ analyses, fetchMoreActivity, paging }: Props) {
-  if (!paging || !analyses || analyses.length === 0) {
+  if (!paging || analyses.length === 0) {
     return null;
   }
   return <ListFooter count={analyses.length} total={paging.total} loadMore={fetchMoreActivity} />;

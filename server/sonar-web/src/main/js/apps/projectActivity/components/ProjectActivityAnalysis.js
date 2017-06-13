@@ -20,20 +20,19 @@
 // @flow
 import React from 'react';
 import Events from './Events';
-import AddVersionForm from './forms/AddVersionForm';
-import AddCustomEventForm from './forms/AddCustomEventForm';
+import AddEventForm from './forms/AddEventForm';
 import RemoveAnalysisForm from './forms/RemoveAnalysisForm';
 import FormattedDate from '../../../components/ui/FormattedDate';
 import { translate } from '../../../helpers/l10n';
 import type { Analysis } from '../types';
 
 type Props = {
-  addCustomEvent: (string, string, string | void) => Promise<*>,
-  addVersion: (string, string) => Promise<*>,
+  addCustomEvent: (analysis: string, name: string, category?: string) => Promise<*>,
+  addVersion: (analysis: string, version: string) => Promise<*>,
   analysis: Analysis,
-  changeEvent: (string, string) => Promise<*>,
-  deleteAnalysis: string => Promise<*>,
-  deleteEvent: (string, string) => Promise<*>,
+  changeEvent: (event: string, name: string) => Promise<*>,
+  deleteAnalysis: (analysis: string) => Promise<*>,
+  deleteEvent: (analysis: string, event: string) => Promise<*>,
   isFirst: boolean,
   canAdmin: boolean
 };
@@ -55,12 +54,17 @@ export default function ProjectActivityAnalysis(props: Props) {
             <ul className="dropdown-menu dropdown-menu-right">
               {version == null &&
                 <li>
-                  <AddVersionForm addVersion={props.addVersion} analysis={props.analysis} />
+                  <AddEventForm
+                    addEvent={props.addVersion}
+                    analysis={props.analysis}
+                    addEventButtonText="project_activity.add_version"
+                  />
                 </li>}
               <li>
-                <AddCustomEventForm
-                  addCustomEvent={props.addCustomEvent}
+                <AddEventForm
+                  addEvent={props.addCustomEvent}
                   analysis={props.analysis}
+                  addEventButtonText="project_activity.add_custom_event"
                 />
               </li>
             </ul>

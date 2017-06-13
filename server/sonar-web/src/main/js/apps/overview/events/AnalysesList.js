@@ -20,25 +20,27 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
 import Analysis from './Analysis';
+import throwGlobalError from '../../../app/utils/throwGlobalError';
+import { getProjectActivity } from '../../../api/projectActivity';
 import { translate } from '../../../helpers/l10n';
-import { fetchRecentProjectActivity } from '../actions';
+import type { Analysis as AnalysisType } from '../../projectActivity/types';
 
 type Props = {
-  project: string,
-  fetchRecentProjectActivity: (project: string) => Promise<*>
+  project: string
 };
 
 type State = {
-  analyses?: Array<*>,
+  analyses: Array<AnalysisType>,
   loading: boolean
 };
 
-class AnalysesList extends React.PureComponent {
+const PAGE_SIZE = 5;
+
+export default class AnalysesList extends React.PureComponent {
   mounted: boolean;
   props: Props;
-  state: State = { loading: true };
+  state: State = { analyses: [], loading: true };
 
   componentDidMount() {
     this.mounted = true;
@@ -57,14 +59,16 @@ class AnalysesList extends React.PureComponent {
 
   fetchData() {
     this.setState({ loading: true });
-    this.props.fetchRecentProjectActivity(this.props.project).then(({ analyses }) => {
-      if (this.mounted) {
-        this.setState({ analyses, loading: false });
-      }
-    });
+    getProjectActivity({ project: this.props.project, ps: PAGE_SIZE })
+      .then(({ analyses }) => {
+        if (this.mounted) {
+          this.setState({ analyses, loading: false });
+        }
+      })
+      .catch(throwGlobalError);
   }
 
-  renderList(analyses) {
+  renderList(analyses: Array<AnalysisType>) {
     if (!analyses.length) {
       return (
         <p className="spacer-top note">
@@ -83,7 +87,7 @@ class AnalysesList extends React.PureComponent {
   render() {
     const { analyses, loading } = this.state;
 
-    if (loading || !analyses) {
+    if (loading) {
       return null;
     }
 
@@ -104,7 +108,3 @@ class AnalysesList extends React.PureComponent {
     );
   }
 }
-
-const mapDispatchToProps = { fetchRecentProjectActivity };
-
-export default connect(null, mapDispatchToProps)(AnalysesList);

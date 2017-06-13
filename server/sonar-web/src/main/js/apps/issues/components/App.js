@@ -64,10 +64,13 @@ import '../styles.css';
 export type Props = {
   component?: Component,
   currentUser: CurrentUser,
-  fetchIssues: () => Promise<*>,
+  fetchIssues: (query: RawQuery) => Promise<*>,
   location: { pathname: string, query: RawQuery },
   onRequestFail: Error => void,
-  router: { push: () => void, replace: () => void }
+  router: {
+    push: ({ pathname: string, query?: RawQuery }) => void,
+    replace: ({ pathname: string, query?: RawQuery }) => void
+  }
 };
 
 export type State = {

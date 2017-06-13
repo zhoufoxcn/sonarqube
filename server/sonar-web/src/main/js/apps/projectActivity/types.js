@@ -40,12 +40,5 @@ export type Paging = {
 
 export type Query = {
   project: string,
-  category?: string
-};
-
-export type ProjectActivityState = {
-  analyses?: Array<Analysis>,
-  loading: boolean,
-  paging?: Paging,
-  query: Query
+  category: string
 };

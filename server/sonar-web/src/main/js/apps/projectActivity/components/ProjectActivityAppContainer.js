@@ -22,46 +22,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import ProjectActivityApp from './ProjectActivityApp';
 import { getComponent } from '../../../store/rootReducer';
-import { onFail } from '../../../store/rootActions';
-import * as api from '../../../api/projectActivity';
-import { serializeQuery } from '../utils';
-import type { Query } from '../types';
-
-const addEvent = (analysis: string, name: string, category?: string) => dispatch =>
-  api
-    .createEvent(analysis, name, category)
-    .then(({ analysis, ...event }) => ({ analysis, event }))
-    .catch(onFail(dispatch));
-
-const changeEvent = (event: string, name: string) => dispatch =>
-  api
-    .changeEvent(event, name)
-    .then(({ analysis, ...event }) => ({ analysis, event }))
-    .catch(onFail(dispatch));
-
-const deleteAnalysis = (analysis: string) => dispatch =>
-  api.deleteAnalysis(analysis).catch(onFail(dispatch));
-
-const deleteEvent = (event: string) => dispatch => api.deleteEvent(event).catch(onFail(dispatch));
-
-const fetchActivity = (query: Query, additional?: {}) => dispatch => {
-  const parameters = {
-    ...serializeQuery(query),
-    ...additional
-  };
-  return api.getProjectActivity(parameters).catch(onFail(dispatch));
-};
 
 const mapStateToProps = (state, ownProps) => ({
   project: getComponent(state, ownProps.location.query.id)
 });
 
-const mapDispatchToProps = {
-  addEvent,
-  deleteEvent,
-  changeEvent,
-  deleteAnalysis,
-  fetchActivity
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectActivityApp));
+export default connect(mapStateToProps)(withRouter(ProjectActivityApp));

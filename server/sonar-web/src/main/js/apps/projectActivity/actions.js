@@ -18,60 +18,44 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // @flow
-import type { Event, ProjectActivityState as State } from './types';
+import type { Event } from './types';
+import type { State } from './components/ProjectActivityApp';
 
-export const addCustomEvent = (analysis: string, event: Event) => (state: State) => {
-  if (state.analyses) {
+export const addCustomEvent = (analysis: string, event: Event) => (state: State) => ({
+  analyses: state.analyses.map(item => {
+    if (item.key !== analysis) {
+      return item;
+    }
+    return { ...item, events: [...item.events, event] };
+  })
+});
+
+export const deleteEvent = (analysis: string, event: string) => (state: State) => ({
+  analyses: state.analyses.map(item => {
+    if (item.key !== analysis) {
+      return item;
+    }
     return {
-      analyses: state.analyses.map(item => {
-        if (item.key === analysis) {
-          return { ...item, events: [...item.events, event] };
-        }
-        return item;
-      })
+      ...item,
+      events: item.events.filter(eventItem => eventItem.key !== event)
     };
-  }
-};
+  })
+});
 
-export const deleteEvent = (analysis: string, event: string) => (state: State) => {
-  if (state.analyses) {
+export const changeEvent = (analysis: string, event: Event) => (state: State) => ({
+  analyses: state.analyses.map(item => {
+    if (item.key !== analysis) {
+      return item;
+    }
     return {
-      analyses: state.analyses.map(item => {
-        if (item.key === analysis) {
-          return {
-            ...item,
-            events: item.events.filter(eventItem => eventItem.key !== event)
-          };
-        }
-        return item;
-      })
+      ...item,
+      events: item.events.map(
+        eventItem => (eventItem.key === event.key ? { ...eventItem, ...event } : eventItem)
+      )
     };
-  }
-};
+  })
+});
 
-export const changeEvent = (analysis: string, event: Event) => (state: State) => {
-  if (state.analyses) {
-    return {
-      analyses: state.analyses.map(item => {
-        if (item.key === analysis) {
-          return {
-            ...item,
-            events: item.events.map(eventItem => {
-              if (eventItem.key === event.key) {
-                return { ...eventItem, ...event };
-              }
-              return eventItem;
-            })
-          };
-        }
-        return item;
-      })
-    };
-  }
-};
-
-export const deleteAnalysis = (analysis: string) => (state: State) => {
-  if (state.analyses) {
-    return { analyses: state.analyses.filter(item => item.key !== analysis) };
-  }
-};
+export const deleteAnalysis = (analysis: string) => (state: State) => ({
+  analyses: state.analyses.filter(item => item.key !== analysis)
+});

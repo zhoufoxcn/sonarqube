@@ -21,17 +21,18 @@
 import React from 'react';
 import Select from 'react-select';
 import { translate } from '../../../helpers/l10n';
+import type { RawQuery } from '../../../helpers/query';
 
 type Props = {
-  updateQuery: ({ [string]: ?string }) => void,
+  updateQuery: RawQuery => void,
   category?: string
 };
 
 export default class ProjectActivityPageHeader extends React.PureComponent {
   props: Props;
 
-  handleTypeChange = (option: ?{ value: string }) => {
-    this.props.updateQuery({ category: option && option.value });
+  handleCategoryChange = (option: ?{ value: string }) => {
+    this.props.updateQuery({ category: option ? option.value : '' });
   };
 
   render() {
@@ -50,7 +51,7 @@ export default class ProjectActivityPageHeader extends React.PureComponent {
             searchable={false}
             value={this.props.category}
             options={selectOptions}
-            onChange={this.handleTypeChange}
+            onChange={this.handleCategoryChange}
           />
         </div>
 

@@ -25,7 +25,7 @@ import type { Analysis } from '../../types';
 
 type Props = {
   analysis: Analysis,
-  deleteAnalysis: string => Promise<*>
+  deleteAnalysis: (analysis: string) => Promise<*>
 };
 
 type State = {

@@ -24,7 +24,7 @@ import { translate } from '../../../../helpers/l10n';
 import type { Event } from '../../types';
 
 type Props = {
-  changeEvent: (string, string) => Promise<*>,
+  changeEvent: (event: string, name: string) => Promise<*>,
   changeEventButtonText: string,
   event: Event,
   onClose: () => void

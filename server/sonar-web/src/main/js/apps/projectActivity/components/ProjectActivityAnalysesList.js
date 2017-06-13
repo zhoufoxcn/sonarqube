@@ -27,20 +27,16 @@ import { translate } from '../../../helpers/l10n';
 import type { Analysis } from '../types';
 
 type Props = {
-  addCustomEvent: (string, string, string | void) => Promise<*>,
-  addVersion: (string, string) => Promise<*>,
-  analyses?: Array<Analysis>,
+  addCustomEvent: (analysis: string, name: string, category?: string) => Promise<*>,
+  addVersion: (analysis: string, version: string) => Promise<*>,
+  analyses: Array<Analysis>,
   canAdmin: boolean,
-  changeEvent: (string, string) => Promise<*>,
-  deleteAnalysis: string => Promise<*>,
-  deleteEvent: (string, string) => Promise<*>
+  changeEvent: (event: string, name: string) => Promise<*>,
+  deleteAnalysis: (analysis: string) => Promise<*>,
+  deleteEvent: (analysis: string, event: string) => Promise<*>
 };
 
 export default function ProjectActivityAnalysesList(props: Props) {
-  if (!props.analyses) {
-    return null;
-  }
-
   if (props.analyses.length === 0) {
     return <div className="note">{translate('no_results')}</div>;
   }
