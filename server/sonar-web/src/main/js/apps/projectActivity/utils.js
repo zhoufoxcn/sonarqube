@@ -18,21 +18,19 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // @flow
-import { isNil, omitBy } from 'lodash';
-import type { Query, RawQuery } from './types';
+import { cleanQuery, parseAsString, serializeString } from '../../helpers/query';
+import type { Query } from './types';
+import type { RawQuery } from '../../helpers/query';
 
 export const parseQuery = (urlQuery: RawQuery): Query => ({
-  project: urlQuery['id'],
-  category: urlQuery['category']
+  project: parseAsString(urlQuery['id']),
+  category: parseAsString(urlQuery['category'])
 });
 
-export const serializeQuery = (query: Query): Query => omitBy(query, isNil);
+export const serializeQuery = (query: Query): Query => cleanQuery(query);
 
 export const serializeUrlQuery = (query: Query): RawQuery =>
-  omitBy(
-    {
-      id: query.project,
-      category: query.category
-    },
-    isNil
-  );
+  cleanQuery({
+    id: serializeString(query.project),
+    category: serializeString(query.category)
+  });

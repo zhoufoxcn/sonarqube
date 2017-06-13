@@ -25,6 +25,7 @@ import AllProjectsContainer from './AllProjectsContainer';
 import { getCurrentUser } from '../../../store/rootReducer';
 import { isFavoriteSet, isAllSet } from '../utils';
 import { searchProjects } from '../../../api/components';
+import type { RawQuery } from '../../../helpers/query';
 
 type Props = {
   currentUser: { isLoggedIn: boolean },
@@ -32,7 +33,7 @@ type Props = {
   optionBarOpen: boolean,
   optionBarToggle: (open: boolean) => void,
   router: {
-    replace: (location: { pathname?: string, query?: { [string]: string } }) => void
+    replace: (location: { pathname?: string, query?: RawQuery }) => void
   }
 };
 

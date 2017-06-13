@@ -43,8 +43,6 @@ export type Query = {
   category?: string
 };
 
-export type RawQuery = { [string]: string };
-
 export type ProjectActivityState = {
   analyses?: Array<Analysis>,
   loading: boolean,

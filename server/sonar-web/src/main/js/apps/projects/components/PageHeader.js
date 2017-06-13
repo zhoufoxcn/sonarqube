@@ -21,6 +21,7 @@
 import React from 'react';
 import SearchFilterContainer from '../filters/SearchFilterContainer';
 import { translate } from '../../../helpers/l10n';
+import type { RawQuery } from '../../../helpers/query';
 
 type Props = {
   isFavorite?: boolean,
@@ -28,7 +29,7 @@ type Props = {
   onOpenOptionBar: () => void,
   optionBarOpen?: boolean,
   organization?: { key: string },
-  query: { [string]: string },
+  query: RawQuery,
   total?: number
 };
 

@@ -27,7 +27,8 @@ import * as actions from '../actions';
 import { parseQuery, serializeUrlQuery } from '../utils';
 import { translate } from '../../../helpers/l10n';
 import './projectActivity.css';
-import type { Query, RawQuery, ProjectActivityState as State } from '../types';
+import type { Query, ProjectActivityState as State } from '../types';
+import type { RawQuery } from '../../../helpers/query';
 
 type Props = {
   addEvent: (string, string, string | void) => Promise<*>,
