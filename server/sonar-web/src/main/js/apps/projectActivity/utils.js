@@ -18,16 +18,21 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 // @flow
-import type { Paging, ReceiveProjectActivityAction } from './duck';
+import { isNil, omitBy } from 'lodash';
+import type { Query, RawQuery } from './types';
 
-export type State = {
-  [key: string]: Paging
-};
+export const parseQuery = (urlQuery: RawQuery): Query => ({
+  project: urlQuery['id'],
+  category: urlQuery['category']
+});
 
-export default (state: State = {}, action: ReceiveProjectActivityAction): State => {
-  if (action.type === 'RECEIVE_PROJECT_ACTIVITY') {
-    return { ...state, [action.project]: action.paging };
-  }
+export const serializeQuery = (query: Query): Query => omitBy(query, isNil);
 
-  return state;
-};
+export const serializeUrlQuery = (query: Query): RawQuery =>
+  omitBy(
+    {
+      id: query.project,
+      category: query.category
+    },
+    isNil
+  );

@@ -17,33 +17,37 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { configureTestStore } from '../../utils/configureStore';
-import paging from '../paging';
-import { receiveProjectActivity } from '../duck';
+// @flow
 
-const PROJECT = 'project-foo';
-
-const ANALYSES = [];
-
-const PAGING_1 = {
-  total: 3,
-  pageIndex: 1,
-  pageSize: 100
+export type Event = {
+  key: string,
+  name: string,
+  category: string,
+  description?: string
 };
 
-const PAGING_2 = {
-  total: 5,
-  pageIndex: 2,
-  pageSize: 30
+export type Analysis = {
+  key: string,
+  date: string,
+  events: Array<Event>
 };
 
-it('reducer', () => {
-  const store = configureTestStore(paging);
-  expect(store.getState()).toMatchSnapshot();
+export type Paging = {
+  pageIndex: number,
+  pageSize: number,
+  total: number
+};
 
-  store.dispatch(receiveProjectActivity(PROJECT, ANALYSES, PAGING_1));
-  expect(store.getState()).toMatchSnapshot();
+export type Query = {
+  project: string,
+  category?: string
+};
 
-  store.dispatch(receiveProjectActivity(PROJECT, ANALYSES, PAGING_2));
-  expect(store.getState()).toMatchSnapshot();
-});
+export type RawQuery = { [string]: string };
+
+export type ProjectActivityState = {
+  analyses?: Array<Analysis>,
+  loading: boolean,
+  paging?: Paging,
+  query: Query
+};

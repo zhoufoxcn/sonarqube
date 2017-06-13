@@ -19,23 +19,24 @@
  */
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import moment from 'moment';
 import ProjectActivityAnalysis from './ProjectActivityAnalysis';
 import FormattedDate from '../../../components/ui/FormattedDate';
-import { getProjectActivity } from '../../../store/rootReducer';
-import { getAnalyses } from '../../../store/projectActivity/duck';
 import { translate } from '../../../helpers/l10n';
-import type { Analysis } from '../../../store/projectActivity/duck';
+import type { Analysis } from '../types';
 
 type Props = {
-  project: string,
+  addCustomEvent: (string, string, string | void) => Promise<*>,
+  addVersion: (string, string) => Promise<*>,
   analyses?: Array<Analysis>,
-  canAdmin: boolean
+  canAdmin: boolean,
+  changeEvent: (string, string) => Promise<*>,
+  deleteAnalysis: string => Promise<*>,
+  deleteEvent: (string, string) => Promise<*>
 };
 
-function ProjectActivityAnalysesList(props: Props) {
+export default function ProjectActivityAnalysesList(props: Props) {
   if (!props.analyses) {
     return null;
   }
@@ -64,11 +65,15 @@ function ProjectActivityAnalysesList(props: Props) {
               {byDay[day] != null &&
                 byDay[day].map(analysis => (
                   <ProjectActivityAnalysis
-                    key={analysis.key}
+                    addCustomEvent={props.addCustomEvent}
+                    addVersion={props.addVersion}
                     analysis={analysis}
-                    isFirst={analysis === firstAnalysis}
-                    project={props.project}
                     canAdmin={props.canAdmin}
+                    changeEvent={props.changeEvent}
+                    deleteAnalysis={props.deleteAnalysis}
+                    deleteEvent={props.deleteEvent}
+                    isFirst={analysis === firstAnalysis}
+                    key={analysis.key}
                   />
                 ))}
             </ul>
@@ -78,9 +83,3 @@ function ProjectActivityAnalysesList(props: Props) {
     </div>
   );
 }
-
-const mapStateToProps = (state, ownProps) => ({
-  analyses: getAnalyses(getProjectActivity(state), ownProps.project)
-});
-
-export default connect(mapStateToProps)(ProjectActivityAnalysesList);

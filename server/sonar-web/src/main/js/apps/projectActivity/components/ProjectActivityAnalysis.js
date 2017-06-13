@@ -24,13 +24,17 @@ import AddVersionForm from './forms/AddVersionForm';
 import AddCustomEventForm from './forms/AddCustomEventForm';
 import RemoveAnalysisForm from './forms/RemoveAnalysisForm';
 import FormattedDate from '../../../components/ui/FormattedDate';
-import type { Analysis } from '../../../store/projectActivity/duck';
 import { translate } from '../../../helpers/l10n';
+import type { Analysis } from '../types';
 
 type Props = {
+  addCustomEvent: (string, string, string | void) => Promise<*>,
+  addVersion: (string, string) => Promise<*>,
   analysis: Analysis,
+  changeEvent: (string, string) => Promise<*>,
+  deleteAnalysis: string => Promise<*>,
+  deleteEvent: (string, string) => Promise<*>,
   isFirst: boolean,
-  project: string,
   canAdmin: boolean
 };
 
@@ -51,17 +55,20 @@ export default function ProjectActivityAnalysis(props: Props) {
             <ul className="dropdown-menu dropdown-menu-right">
               {version == null &&
                 <li>
-                  <AddVersionForm analysis={props.analysis} />
+                  <AddVersionForm addVersion={props.addVersion} analysis={props.analysis} />
                 </li>}
               <li>
-                <AddCustomEventForm analysis={props.analysis} />
+                <AddCustomEventForm
+                  addCustomEvent={props.addCustomEvent}
+                  analysis={props.analysis}
+                />
               </li>
             </ul>
           </div>
 
           {!isFirst &&
             <div className="display-inline-block little-spacer-left">
-              <RemoveAnalysisForm analysis={props.analysis} project={props.project} />
+              <RemoveAnalysisForm analysis={props.analysis} deleteAnalysis={props.deleteAnalysis} />
             </div>}
         </div>}
 
@@ -72,9 +79,11 @@ export default function ProjectActivityAnalysis(props: Props) {
       {events.length > 0 &&
         <Events
           analysis={props.analysis.key}
+          canAdmin={canAdmin}
+          changeEvent={props.changeEvent}
+          deleteEvent={props.deleteEvent}
           events={events}
           isFirst={props.isFirst}
-          canAdmin={canAdmin}
         />}
     </li>
   );

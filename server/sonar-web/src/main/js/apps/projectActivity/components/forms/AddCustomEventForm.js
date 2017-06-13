@@ -19,22 +19,20 @@
  */
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
-import { addCustomEvent } from '../../actions';
 import AddEventForm from './AddEventForm';
-import type { Analysis } from '../../../../store/projectActivity/duck';
+import type { Analysis } from '../../types';
 
 type Props = {
-  addEvent: (analysis: string, name: string, category?: string) => Promise<*>,
+  addCustomEvent: (string, string, string | void) => Promise<*>,
   analysis: Analysis
 };
 
-function AddCustomEventForm(props: Props) {
-  return <AddEventForm {...props} addEventButtonText="project_activity.add_custom_event" />;
+export default function AddCustomEventForm({ addCustomEvent, analysis }: Props) {
+  return (
+    <AddEventForm
+      addEvent={addCustomEvent}
+      analysis={analysis}
+      addEventButtonText="project_activity.add_custom_event"
+    />
+  );
 }
-
-const mapStateToProps = null;
-
-const mapDispatchToProps = { addEvent: addCustomEvent };
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddCustomEventForm);

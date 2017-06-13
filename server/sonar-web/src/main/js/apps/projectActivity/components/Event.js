@@ -24,13 +24,15 @@ import ChangeCustomEventForm from './forms/ChangeCustomEventForm';
 import RemoveCustomEventForm from './forms/RemoveCustomEventForm';
 import DeleteIcon from './DeleteIcon';
 import ChangeIcon from './ChangeIcon';
-import type { Event as EventType } from '../../../store/projectActivity/duck';
+import type { Event as EventType } from '../types';
 
 type Props = {
   analysis: string,
+  canAdmin: boolean,
+  changeEvent: (string, string) => Promise<*>,
+  deleteEvent: (string, string) => Promise<*>,
   event: EventType,
-  isFirst: boolean,
-  canAdmin: boolean
+  isFirst: boolean
 };
 
 type State = {
@@ -41,7 +43,6 @@ type State = {
 export default class Event extends React.PureComponent {
   mounted: boolean;
   props: Props;
-
   state: State = {
     changing: false,
     deleting: false
@@ -99,11 +100,16 @@ export default class Event extends React.PureComponent {
           </div>}
 
         {this.state.changing &&
-          <ChangeCustomEventForm event={this.props.event} onClose={this.stopChanging} />}
+          <ChangeCustomEventForm
+            changeEvent={this.props.changeEvent}
+            event={this.props.event}
+            onClose={this.stopChanging}
+          />}
 
         {this.state.deleting &&
           <RemoveCustomEventForm
             analysis={this.props.analysis}
+            deleteEvent={this.props.deleteEvent}
             event={this.props.event}
             onClose={this.stopDeleting}
           />}

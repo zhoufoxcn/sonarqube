@@ -19,15 +19,9 @@
  */
 // @flow
 import * as api from '../../api/projectActivity';
-import { receiveProjectActivity } from '../../store/projectActivity/duck';
 import { onFail } from '../../store/rootActions';
 
 const PAGE_SIZE = 5;
 
 export const fetchRecentProjectActivity = (project: string) => (dispatch: Function) =>
-  api
-    .getProjectActivity(project, { pageSize: PAGE_SIZE })
-    .then(
-      ({ analyses, paging }) => dispatch(receiveProjectActivity(project, analyses, paging)),
-      onFail(dispatch)
-    );
+  api.getProjectActivity({ project, ps: PAGE_SIZE }).catch(onFail(dispatch));

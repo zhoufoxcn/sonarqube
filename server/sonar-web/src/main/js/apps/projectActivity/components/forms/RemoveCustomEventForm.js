@@ -19,19 +19,17 @@
  */
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
 import RemoveEventForm from './RemoveEventForm';
-import { deleteEvent } from '../../actions';
-import type { Event } from '../../../../store/projectActivity/duck';
+import type { Event } from '../../types';
 
 type Props = {
   analysis: string,
+  deleteEvent: (string, string) => Promise<*>,
   event: Event,
-  deleteEvent: (analysis: string, event: string) => Promise<*>,
   onClose: () => void
 };
 
-function RemoveCustomEventForm(props: Props) {
+export default function RemoveCustomEventForm(props: Props) {
   return (
     <RemoveEventForm
       {...props}
@@ -40,9 +38,3 @@ function RemoveCustomEventForm(props: Props) {
     />
   );
 }
-
-const mapStateToProps = null;
-
-const mapDispatchToProps = { deleteEvent };
-
-export default connect(mapStateToProps, mapDispatchToProps)(RemoveCustomEventForm);

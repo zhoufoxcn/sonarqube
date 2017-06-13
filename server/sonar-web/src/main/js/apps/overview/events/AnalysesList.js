@@ -24,22 +24,21 @@ import { connect } from 'react-redux';
 import Analysis from './Analysis';
 import { translate } from '../../../helpers/l10n';
 import { fetchRecentProjectActivity } from '../actions';
-import { getProjectActivity } from '../../../store/rootReducer';
-import { getAnalyses } from '../../../store/projectActivity/duck';
 
 type Props = {
-  analyses?: Array<*>,
   project: string,
   fetchRecentProjectActivity: (project: string) => Promise<*>
+};
+
+type State = {
+  analyses?: Array<*>,
+  loading: boolean
 };
 
 class AnalysesList extends React.PureComponent {
   mounted: boolean;
   props: Props;
-
-  state = {
-    loading: true
-  };
+  state: State = { loading: true };
 
   componentDidMount() {
     this.mounted = true;
@@ -58,9 +57,9 @@ class AnalysesList extends React.PureComponent {
 
   fetchData() {
     this.setState({ loading: true });
-    this.props.fetchRecentProjectActivity(this.props.project).then(() => {
+    this.props.fetchRecentProjectActivity(this.props.project).then(({ analyses }) => {
       if (this.mounted) {
-        this.setState({ loading: false });
+        this.setState({ analyses, loading: false });
       }
     });
   }
@@ -82,8 +81,7 @@ class AnalysesList extends React.PureComponent {
   }
 
   render() {
-    const { analyses } = this.props;
-    const { loading } = this.state;
+    const { analyses, loading } = this.state;
 
     if (loading || !analyses) {
       return null;
@@ -107,10 +105,6 @@ class AnalysesList extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state, ownProps: Props) => ({
-  analyses: getAnalyses(getProjectActivity(state), ownProps.project)
-});
-
 const mapDispatchToProps = { fetchRecentProjectActivity };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnalysesList);
+export default connect(null, mapDispatchToProps)(AnalysesList);

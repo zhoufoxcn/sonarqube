@@ -19,23 +19,17 @@
  */
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
 import ChangeEventForm from './ChangeEventForm';
-import { changeEvent } from '../../actions';
-import type { Event } from '../../../../store/projectActivity/duck';
+import type { Event } from '../../types';
 
 type Props = {
-  changeEvent: (event: string, name: string) => Promise<*>,
+  changeEvent: (string, string) => Promise<*>,
   event: Event,
   onClose: () => void
 };
 
-const ChangeCustomEventForm = (props: Props) => (
-  <ChangeEventForm {...props} changeEventButtonText="project_activity.change_custom_event" />
-);
-
-const mapStateToProps = null;
-
-const mapDispatchToProps = { changeEvent };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChangeCustomEventForm);
+export default function ChangeCustomEventForm(props: Props) {
+  return (
+    <ChangeEventForm {...props} changeEventButtonText="project_activity.change_custom_event" />
+  );
+}

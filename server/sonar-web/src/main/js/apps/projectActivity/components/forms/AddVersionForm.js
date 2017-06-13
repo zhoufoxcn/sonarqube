@@ -19,22 +19,20 @@
  */
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
-import { addVersion } from '../../actions';
 import AddEventForm from './AddEventForm';
-import type { Analysis } from '../../../../store/projectActivity/duck';
+import type { Analysis } from '../../types';
 
 type Props = {
-  addEvent: (analysis: string, version: string) => Promise<*>,
+  addVersion: (string, string) => Promise<*>,
   analysis: Analysis
 };
 
-function AddVersionForm(props: Props) {
-  return <AddEventForm {...props} addEventButtonText="project_activity.add_version" />;
+export default function AddVersionForm({ addVersion, analysis }: Props) {
+  return (
+    <AddEventForm
+      addEvent={addVersion}
+      analysis={analysis}
+      addEventButtonText="project_activity.add_version"
+    />
+  );
 }
-
-const mapStateToProps = null;
-
-const mapDispatchToProps = { addEvent: addVersion };
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddVersionForm);
