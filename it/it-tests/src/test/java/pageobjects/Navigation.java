@@ -27,7 +27,6 @@ import com.sonar.orchestrator.Orchestrator;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.annotation.Nullable;
-import org.junit.rules.ExternalResource;
 import org.openqa.selenium.By;
 import pageobjects.issues.IssuesPage;
 import pageobjects.licenses.LicensesPage;
@@ -39,17 +38,12 @@ import static com.codeborne.selenide.Condition.hasText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
-public class Navigation extends ExternalResource {
+public class Navigation {
 
-  public static Navigation get(Orchestrator orchestrator) {
+  public Navigation(Orchestrator orchestrator) {
     SelenideConfig.configure(orchestrator);
-    return new Navigation();
-  }
-
-  @Override
-  protected void before() throws Throwable {
     WebDriverRunner.getWebDriver().manage().deleteAllCookies();
-    openHomepage();
+    //openHomepage();
   }
 
   public Navigation openHomepage() {

@@ -73,8 +73,6 @@ public class OrganizationIssueAssignTest {
   public UserRule userRule = new UserRule(orchestrator);
   @Rule
   public IssueRule issueRule = IssueRule.from(orchestrator);
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
 
   private WsClient adminClient = newAdminWsClient(orchestrator);
 
@@ -160,7 +158,7 @@ public class OrganizationIssueAssignTest {
     adminClient.organizations().addMember(ORGANIZATION_KEY, ASSIGNEE_LOGIN);
     userRule.createUser(OTHER_LOGIN, "pwd");
     provisionAndAnalyseProject(SAMPLE_PROJECT_KEY, ORGANIZATION_KEY);
-    IssuesPage page = nav.logIn().asAdmin().openIssues();
+    IssuesPage page = new Navigation(orchestrator).logIn().asAdmin().openIssues();
     page.getFirstIssue()
       .shouldAllowAssign()
       .assigneeSearchResultCount(OTHER_LOGIN, 0)
@@ -174,7 +172,9 @@ public class OrganizationIssueAssignTest {
     adminClient.organizations().addMember(ORGANIZATION_KEY, ASSIGNEE_LOGIN);
     userRule.createUser(OTHER_LOGIN, "pwd");
     provisionAndAnalyseProject(SAMPLE_PROJECT_KEY, ORGANIZATION_KEY);
-    IssuesPage page = nav.logIn().asAdmin().openComponentIssues(SAMPLE_PROJECT_KEY);
+    IssuesPage page = new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .openComponentIssues(SAMPLE_PROJECT_KEY);
     page
       .bulkChangeOpen()
       .bulkChangeAssigneeSearchCount(ASSIGNEE_LOGIN, 1)
@@ -188,7 +188,9 @@ public class OrganizationIssueAssignTest {
     adminClient.organizations().addMember(ORGANIZATION_KEY, ASSIGNEE_LOGIN);
     userRule.createUser(OTHER_LOGIN, "pwd");
     provisionAndAnalyseProject(SAMPLE_PROJECT_KEY, ORGANIZATION_KEY);
-    IssuesPage page = nav.logIn().asAdmin().openIssues();
+    IssuesPage page = new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .openIssues();
     page
       .bulkChangeOpen()
       .bulkChangeAssigneeSearchCount(ASSIGNEE_LOGIN, 1)

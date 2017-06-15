@@ -63,7 +63,7 @@ public class SettingsTestRestartingOrchestrator {
       .build();
     orchestrator.start();
 
-    Navigation nav = Navigation.get(orchestrator).openHomepage().logIn().asAdmin();
+    Navigation nav = new Navigation(orchestrator).openHomepage().logIn().asAdmin();
 
     nav.openSettings(null)
       .assertMenuContains("General")
@@ -95,7 +95,8 @@ public class SettingsTestRestartingOrchestrator {
     // should not fail
     orchestrator.executeBuilds(withDeprecatedKey, withNewKey);
 
-    Navigation.get(orchestrator).openHomepage().logIn().asAdmin().openSettings(null)
+    Navigation nav = new Navigation(orchestrator);
+    nav.openHomepage().logIn().asAdmin().openSettings(null)
       .assertMenuContains("General")
       .assertSettingDisplayed("sonar.newKey")
       .assertSettingNotDisplayed("sonar.deprecatedKey");

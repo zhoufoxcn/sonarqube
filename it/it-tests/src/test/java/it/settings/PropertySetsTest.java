@@ -27,7 +27,6 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.Settings;
 import org.sonarqube.ws.client.setting.SetRequest;
@@ -48,8 +47,7 @@ public class PropertySetsTest {
   @ClassRule
   public static Orchestrator orchestrator = Category1Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
+  private Navigation nav = new Navigation(orchestrator);
 
   static SettingsService SETTINGS;
 

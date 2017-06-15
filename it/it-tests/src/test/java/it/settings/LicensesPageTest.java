@@ -22,7 +22,6 @@ package it.settings;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.Settings.ValuesWsResponse;
 import org.sonarqube.ws.client.WsClient;
@@ -39,9 +38,6 @@ import static util.ItUtils.pluginArtifact;
 public class LicensesPageTest {
   private static Orchestrator orchestrator;
   private static WsClient wsClient;
-
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
 
   @BeforeClass
   public static void start() {
@@ -62,6 +58,7 @@ public class LicensesPageTest {
 
   @Test
   public void display_licenses() {
+    Navigation nav = new Navigation(orchestrator);
     LicensesPage page = nav.logIn().asAdmin().openLicenses();
 
     page.getLicenses().shouldHaveSize(2);
@@ -73,6 +70,7 @@ public class LicensesPageTest {
   public void change_licenses() {
     String EXAMPLE_LICENSE = "TmFtZTogRGV2ZWxvcHBlcnMKUGx1Z2luOiBhdXRvY29udHJvbApFeHBpcmVzOiAyMDEyLTA0LTAxCktleTogNjI5N2MxMzEwYzg2NDZiZTE5MDU1MWE4ZmZmYzk1OTBmYzEyYTIyMgo=";
 
+    Navigation nav = new Navigation(orchestrator);
     LicensesPage page = nav.logIn().asAdmin().openLicenses();
     LicenseItem licenseItem = page.getLicenseByKey("typed.license.secured");
     licenseItem.setLicense(EXAMPLE_LICENSE);

@@ -23,7 +23,6 @@ import com.codeborne.selenide.Condition;
 import com.sonar.orchestrator.Orchestrator;
 import it.Category6Suite;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
@@ -46,13 +45,10 @@ public class OrganizationUiExtensionsTest {
   public static TestRule chain = RuleChain.outerRule(orchestrator)
     .around(organizations);
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
-
   @Test
   public void organization_page() {
     Organization organization = organizations.create();
-    nav.open("/organizations/" + organization.getKey() + "/projects");
+    new Navigation(orchestrator).open("/organizations/" + organization.getKey() + "/projects");
 
     $("#organization-navigation-more").click();
     $(By.linkText("Organization Page")).shouldBe(Condition.visible).click();
@@ -64,7 +60,7 @@ public class OrganizationUiExtensionsTest {
   @Test
   public void organization_admin_page() {
     Organization organization = organizations.create();
-    nav.logIn().asAdmin().open("/organizations/" + organization.getKey() + "/projects");
+    new Navigation(orchestrator).logIn().asAdmin().open("/organizations/" + organization.getKey() + "/projects");
 
     $("#context-navigation a.navbar-admin-link").click();
     $(By.linkText("Organization Admin Page")).shouldBe(Condition.visible).click();

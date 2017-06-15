@@ -24,7 +24,6 @@ import com.sonar.orchestrator.build.SonarScanner;
 import it.Category1Suite;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import pageobjects.BackgroundTaskItem;
 import pageobjects.BackgroundTasksPage;
@@ -38,9 +37,6 @@ public class BackgroundTasksTest {
 
   @ClassRule
   public static Orchestrator ORCHESTRATOR = Category1Suite.ORCHESTRATOR;
-
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
 
   @BeforeClass
   public static void beforeClass() {
@@ -56,6 +52,7 @@ public class BackgroundTasksTest {
 
   @Test
   public void display_scanner_context() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     nav.logIn().submitCredentials("admin", "admin");
     BackgroundTasksPage page = nav.openBackgroundTasksPage();
 
@@ -69,6 +66,7 @@ public class BackgroundTasksTest {
 
   @Test
   public void display_error_stacktrace() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     executeBuild("test-project", "Test Project", "2010-01-01");
 
     nav.logIn().submitCredentials("admin", "admin");

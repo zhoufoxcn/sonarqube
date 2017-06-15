@@ -84,7 +84,7 @@ public class QualityProfilesUiTest {
 
   @Test
   public void testNotFound() {
-    Navigation nav = Navigation.get(orchestrator);
+    Navigation nav = new Navigation(orchestrator);
 
     nav.open("/profiles/show?key=unknown");
     $(".quality-profile-not-found").should(Condition.visible);

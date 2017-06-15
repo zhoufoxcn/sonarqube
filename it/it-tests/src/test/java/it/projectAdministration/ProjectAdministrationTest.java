@@ -59,9 +59,6 @@ public class ProjectAdministrationTest {
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
-
   private static final String PROJECT_KEY = "sample";
   private static final String FILE_KEY = "sample:src/main/xoo/sample/Sample.xoo";
 
@@ -163,6 +160,7 @@ public class ProjectAdministrationTest {
   public void display_project_settings() throws UnsupportedEncodingException {
     scanSample(null, null);
 
+    Navigation nav = new Navigation(orchestrator);
     SettingsPage page = nav.logIn().asAdmin().openSettings("sample")
       .assertMenuContains("Analysis Scope")
       .assertMenuContains("Category 1")
@@ -186,6 +184,7 @@ public class ProjectAdministrationTest {
   public void display_module_settings() throws UnsupportedEncodingException {
     orchestrator.executeBuild(SonarScanner.create(projectDir("shared/xoo-multi-modules-sample")));
 
+    Navigation nav = new Navigation(orchestrator);
     nav.logIn().asAdmin()
       .openSettings("com.sonarsource.it.samples:multi-modules-sample:module_a")
       .assertMenuContains("Analysis Scope")

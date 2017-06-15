@@ -25,7 +25,6 @@ import it.Category4Suite;
 import java.util.List;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import pageobjects.Navigation;
 import pageobjects.ProjectActivityPage;
@@ -38,8 +37,7 @@ public class ProjectActivityPageTest {
   @ClassRule
   public static Orchestrator ORCHESTRATOR = Category4Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
+  private Navigation nav = new Navigation(ORCHESTRATOR);
 
   @Before
   public void setUp() throws Exception {

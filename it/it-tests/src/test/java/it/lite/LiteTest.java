@@ -109,7 +109,7 @@ public class LiteTest {
 
   @Test
   public void open_page_rules() {
-    RulesPage rulesPage = Navigation.get(ORCHESTRATOR)
+    RulesPage rulesPage = new Navigation(ORCHESTRATOR)
       .openHomepage()
       .clickOnRules();
 

@@ -25,7 +25,6 @@ import it.Category1Suite;
 import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.WsComponents;
 import org.sonarqube.ws.client.component.SearchProjectsRequest;
@@ -44,8 +43,7 @@ public class ProjectsAdministrationTest {
   @ClassRule
   public static Orchestrator orchestrator = Category1Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
+  private Navigation nav = new Navigation(orchestrator);
 
   @Before
   public void deleteAnalysisData() throws SQLException {

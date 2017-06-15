@@ -28,7 +28,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.WsUserTokens;
 import org.sonarqube.ws.client.GetRequest;
@@ -62,9 +61,6 @@ public class LocalAuthenticationTest {
   @ClassRule
   public static UserRule userRule = UserRule.from(ORCHESTRATOR);
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
-
   private static WsClient adminWsClient;
 
   private static UserTokensService userTokensWsClient;
@@ -97,6 +93,7 @@ public class LocalAuthenticationTest {
 
   @Test
   public void log_in_with_correct_credentials_then_log_out() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     nav.shouldNotBeLoggedIn();
     nav.logIn().submitCredentials(LOGIN, "123456").shouldBeLoggedIn();
     nav.logOut().shouldNotBeLoggedIn();
@@ -104,6 +101,7 @@ public class LocalAuthenticationTest {
 
   @Test
   public void log_in_with_wrong_credentials() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     LoginPage page = nav
       .logIn()
       .submitWrongCredentials(LOGIN, "wrong");

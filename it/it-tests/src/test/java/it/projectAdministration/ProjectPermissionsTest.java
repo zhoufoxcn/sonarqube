@@ -24,7 +24,6 @@ import com.sonar.orchestrator.build.SonarScanner;
 import it.Category1Suite;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import pageobjects.Navigation;
 import pageobjects.ProjectPermissionsPage;
@@ -37,8 +36,7 @@ public class ProjectPermissionsTest {
   @ClassRule
   public static Orchestrator orchestrator = Category1Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
+  private Navigation nav = new Navigation(orchestrator);
 
   @BeforeClass
   public static void beforeClass() {

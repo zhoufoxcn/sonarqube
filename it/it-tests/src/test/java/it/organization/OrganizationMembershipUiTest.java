@@ -25,7 +25,6 @@ import it.Category6Suite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
@@ -51,9 +50,6 @@ public class OrganizationMembershipUiTest {
     .around(users)
     .around(organizations);
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
-
   private static WsClient rootWsClient;
 
   @BeforeClass
@@ -76,7 +72,7 @@ public class OrganizationMembershipUiTest {
     addMembership(organization, member2);
     User nonMember = users.createUser();
 
-    MembersPage page = nav.openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator).openOrganizationMembers(organization.getKey());
     page
       .canNotAddMember()
       .shouldHaveTotal(3);
@@ -98,7 +94,7 @@ public class OrganizationMembershipUiTest {
     // Created to verify that only the user part of the org is returned
     User userWithSameNamePrefix = users.createUser(p -> p.setName(member2.getName() + "barOtherGuy"));
 
-    MembersPage page = nav.openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator).openOrganizationMembers(organization.getKey());
     page
       .searchForMember("bar")
       .shouldHaveTotal(1);
@@ -116,7 +112,7 @@ public class OrganizationMembershipUiTest {
     Organization organization = organizations.create();
     User user = users.createUser();
 
-    MembersPage page = nav.logIn().asAdmin().openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator).logIn().asAdmin().openOrganizationMembers(organization.getKey());
     page
       .shouldHaveTotal(1)
       .addMember(user.getLogin())
@@ -137,7 +133,7 @@ public class OrganizationMembershipUiTest {
     User user2 = users.createUser();
     addMembership(organization, user2);
 
-    MembersPage page = nav.logIn().asAdmin().openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator).logIn().asAdmin().openOrganizationMembers(organization.getKey());
     page.shouldHaveTotal(3)
       .getMembersByIdx(1).removeMembership();
     page.shouldHaveTotal(2);
@@ -149,7 +145,7 @@ public class OrganizationMembershipUiTest {
     User user = users.createUser();
     addMembership(organization, user);
 
-    MembersPage page = nav.logIn().asAdmin().openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator).logIn().asAdmin().openOrganizationMembers(organization.getKey());
     // foo user
     page.getMembersByIdx(1)
       .manageGroupsOpen()
@@ -169,7 +165,9 @@ public class OrganizationMembershipUiTest {
     Organization organization = organizations.create();
     User user = users.createUser();
 
-    MembersPage page = nav.logIn().asAdmin().openOrganizationMembers(organization.getKey());
+    MembersPage page = new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .openOrganizationMembers(organization.getKey());
     page
       .addMember(user.getLogin())
       .getMembersByIdx(1)

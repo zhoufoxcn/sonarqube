@@ -69,8 +69,6 @@ public class BillingTest {
   public OrganizationRule organizationRule = new OrganizationRule(orchestrator);
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
 
   private static WsClient adminClient;
 
@@ -217,7 +215,9 @@ public class BillingTest {
     String projectKey = createPublicProject(createOrganization());
     setServerProperty(orchestrator, "sonar.billing.preventUpdatingProjectsVisibilityToPrivate", "true");
 
-    nav.logIn().asAdmin().openProjectPermissions(projectKey)
+    new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .openProjectPermissions(projectKey)
       .shouldBePublic()
       .shouldNotAllowPrivate();
   }
@@ -227,7 +227,9 @@ public class BillingTest {
     String projectKey = createPublicProject(createOrganization());
     setServerProperty(orchestrator, "sonar.billing.preventUpdatingProjectsVisibilityToPrivate", "false");
 
-    nav.logIn().asAdmin().openProjectPermissions(projectKey)
+    new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .openProjectPermissions(projectKey)
       .shouldBePublic()
       .turnToPrivate();
   }

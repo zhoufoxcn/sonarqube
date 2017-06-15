@@ -22,14 +22,11 @@ package it.ui;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarScanner;
 import it.Category4Suite;
-import it.user.ForceAuthenticationTest;
 import java.util.Map;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.client.GetRequest;
 import org.sonarqube.ws.client.WsResponse;
-import org.sonarqube.ws.client.setting.SetRequest;
 import pageobjects.Navigation;
 import util.ItUtils;
 
@@ -47,8 +44,7 @@ public class UiTest {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Category4Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
+  private Navigation nav = new Navigation(ORCHESTRATOR);
 
   @Test
   public void footer_contains_information() {

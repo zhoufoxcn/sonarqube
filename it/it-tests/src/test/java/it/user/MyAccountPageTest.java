@@ -26,7 +26,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.client.PostRequest;
 import org.sonarqube.ws.client.WsClient;
@@ -45,9 +44,6 @@ public class MyAccountPageTest {
   public static Orchestrator orchestrator = Category4Suite.ORCHESTRATOR;
   private static WsClient adminWsClient;
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
-
   @BeforeClass
   public static void setUp() {
     adminWsClient = newAdminWsClient(orchestrator);
@@ -65,6 +61,7 @@ public class MyAccountPageTest {
 
   @Test
   public void should_display_user_details() throws Exception {
+    Navigation nav = new Navigation(orchestrator);
     nav.openLogin().submitCredentials("account-user", "password").shouldBeLoggedIn();
     nav.open("/account");
     $("#name").shouldHave(text("User With Account"));
@@ -77,6 +74,7 @@ public class MyAccountPageTest {
 
   @Test
   public void should_change_password() throws Exception {
+    Navigation nav = new Navigation(orchestrator);
     nav.openLogin().submitCredentials("account-user", "password").shouldBeLoggedIn();
     nav.open("/account/security");
     $("#old_password").val("password");
@@ -101,6 +99,7 @@ public class MyAccountPageTest {
 
   @Test
   public void notifications() {
+    Navigation nav = new Navigation(orchestrator);
     nav.logIn().asAdmin().openNotifications()
       .addGlobalNotification("ChangesOnMyIssue")
       .addGlobalNotification("NewIssues")

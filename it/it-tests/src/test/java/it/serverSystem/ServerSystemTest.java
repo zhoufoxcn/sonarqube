@@ -71,7 +71,7 @@ public class ServerSystemTest {
 
   @Test
   public void generate_server_id() throws IOException {
-    Navigation nav = Navigation.get(orchestrator).openHomepage().logIn().asAdmin();
+    Navigation nav = new Navigation(orchestrator).logIn().asAdmin();
     String validIpAddress = getValidIpAddress();
 
     nav.openServerId()

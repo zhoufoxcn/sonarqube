@@ -24,7 +24,6 @@ import com.sonar.orchestrator.build.SonarScanner;
 import it.Category1Suite;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.client.PostRequest;
 import org.sonarqube.ws.client.WsClient;
@@ -41,8 +40,7 @@ public class ProjectsPageTest {
   @ClassRule
   public static Orchestrator ORCHESTRATOR = Category1Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
+  private Navigation nav = new Navigation(ORCHESTRATOR);
 
   private static WsClient wsClient;
   private static final String PROJECT_KEY = "key-foo";

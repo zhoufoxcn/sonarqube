@@ -23,7 +23,6 @@ import com.sonar.orchestrator.Orchestrator;
 import it.Category2Suite;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import pageobjects.Navigation;
 import pageobjects.issues.Issue;
@@ -42,9 +41,6 @@ public class IssuesPageTest {
   @ClassRule
   public static UserRule userRule = UserRule.from(ORCHESTRATOR);
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
-
   @BeforeClass
   public static void prepareData() {
     ORCHESTRATOR.resetData();
@@ -58,6 +54,7 @@ public class IssuesPageTest {
 
   @Test
   public void should_display_actions() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     IssuesPage page = nav.logIn().asAdmin().openIssues();
     Issue issue = page.getFirstIssue();
     issue.shouldAllowAssign().shouldAllowChangeType();
@@ -65,6 +62,7 @@ public class IssuesPageTest {
 
   @Test
   public void should_not_display_actions() {
+    Navigation nav = new Navigation(ORCHESTRATOR);
     IssuesPage page = nav.openIssues();
     Issue issue = page.getFirstIssue();
     issue.shouldNotAllowAssign().shouldNotAllowChangeType();

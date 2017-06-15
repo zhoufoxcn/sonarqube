@@ -24,7 +24,6 @@ import com.sonar.orchestrator.build.SonarScanner;
 import it.Category4Suite;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import pageobjects.Navigation;
@@ -41,9 +40,6 @@ public class UiExtensionsTest {
   @ClassRule
   public static Orchestrator orchestrator = Category4Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
-
   @BeforeClass
   public static void setUp() throws Exception {
     orchestrator.resetData();
@@ -57,7 +53,7 @@ public class UiExtensionsTest {
 
   @Test
   public void global_page() {
-    nav.open("/about");
+    new Navigation(orchestrator).open("/about");
 
     // on about page
     $("#global-navigation-more").click();
@@ -69,7 +65,9 @@ public class UiExtensionsTest {
 
   @Test
   public void global_admin_page() {
-    nav.logIn().asAdmin().open("/about");
+    new Navigation(orchestrator)
+      .logIn().asAdmin()
+      .open("/about");
 
     $(".navbar-admin-link").click();
     $("#settings-navigation-configuration").click();
@@ -81,7 +79,7 @@ public class UiExtensionsTest {
 
   @Test
   public void project_page() {
-    nav.open("/dashboard?id=sample");
+    new Navigation(orchestrator).open("/dashboard?id=sample");
 
     $("#component-navigation-more").click();
     $(By.linkText("Project Page")).click();
@@ -92,6 +90,7 @@ public class UiExtensionsTest {
 
   @Test
   public void project_admin_page() {
+    Navigation nav = new Navigation(orchestrator);
     nav.logIn().asAdmin().open("/dashboard?id=sample");
 
     $("#component-navigation-admin").click();

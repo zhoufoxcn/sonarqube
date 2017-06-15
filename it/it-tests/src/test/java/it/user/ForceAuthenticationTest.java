@@ -24,7 +24,6 @@ import it.Category4Suite;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.client.GetRequest;
 import org.sonarqube.ws.client.PostRequest;
@@ -50,9 +49,6 @@ public class ForceAuthenticationTest {
 
   @ClassRule
   public static UserRule userRule = UserRule.from(orchestrator);
-
-  @Rule
-  public Navigation nav = Navigation.get(orchestrator);
 
   static WsClient anonymousClient;
   static WsClient adminWsClient;
@@ -111,7 +107,7 @@ public class ForceAuthenticationTest {
 
   @Test
   public void redirect_to_login_page() {
-    Navigation page = nav.openHomepage();
+    Navigation page = new Navigation(orchestrator).openHomepage();
     page.shouldBeRedirectToLogin();
     page.openLogin().submitCredentials("admin", "admin").shouldBeLoggedIn();
     page.logOut().shouldBeRedirectToLogin();

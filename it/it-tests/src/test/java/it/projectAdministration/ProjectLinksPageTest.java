@@ -28,7 +28,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonarqube.ws.WsProjectLinks.CreateWsResponse;
 import org.sonarqube.ws.client.WsClient;
@@ -48,8 +47,7 @@ public class ProjectLinksPageTest {
   @ClassRule
   public static Orchestrator ORCHESTRATOR = Category1Suite.ORCHESTRATOR;
 
-  @Rule
-  public Navigation nav = Navigation.get(ORCHESTRATOR);
+  private Navigation nav = new Navigation(ORCHESTRATOR);
 
   private static WsClient wsClient;
   private long customLinkId;
